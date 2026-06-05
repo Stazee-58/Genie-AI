@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} — Deep Style AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --cream: #f5f0e8; --warm-white: #faf8f4;
+            --espresso: #2c1a0e; --mocha: #6b3d2a;
+            --caramel: #c4843b; --gold: #d4aa5f;
+            --dust: #b8a99a; --silk: #ede5d8;
+            --shadow: rgba(44,26,14,0.08);
+        }
+        html, body { background: var(--cream); color: var(--espresso); font-family: 'Jost', sans-serif; font-weight: 300; }
+        body::before {
+            content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+        }
+
+        /* NAV */
+        .ds-nav {
+            position: relative; z-index: 2;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.5rem 4rem; border-bottom: 1px solid var(--shadow);
+            animation: fd 0.7s ease-out forwards;
+        }
+        .ds-logo { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--espresso); text-decoration: none; }
+        .ds-logo span { color: var(--caramel); }
+        .ds-nav-back { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--dust); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.3s; }
+        .ds-nav-back:hover { color: var(--caramel); }
+
+        /* SUMMARY VIEW */
+        .ds-summary {
+            position: relative; z-index: 1;
+            max-width: 1200px; margin: 0 auto; padding: 3rem 4rem 5rem;
+            display: flex; flex-direction: column; gap: 3rem;
+            animation: fu 0.8s ease-out 0.1s both;
+        }
+        .ds-hero-row {
+            display: grid; grid-template-columns: 300px 1fr; gap: 3rem;
+            background: var(--warm-white); border: 1px solid var(--shadow);
+            border-radius: 2px; padding: 2.5rem; align-items: start;
+        }
+        .ds-hero-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 2px; background: var(--silk); }
+        .ds-hero-eyebrow { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--caramel); margin-bottom: 1rem; }
+        .ds-hero-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; line-height: 1.1; color: var(--espresso); margin-bottom: 1.25rem; }
+        .ds-hero-text { font-size: 0.9rem; line-height: 1.9; color: #6b5a4e; margin-bottom: 2rem; }
+        .ds-cta {
+            display: inline-block; background: var(--espresso); color: var(--cream);
+            padding: 0.75rem 1.75rem; font-size: 0.68rem; letter-spacing: 0.2em;
+            text-transform: uppercase; text-decoration: none; border-radius: 2px; cursor: pointer;
+            transition: all 0.3s ease; font-family: 'Jost', sans-serif; border: none;
+        }
+        .ds-cta:hover { background: var(--mocha); transform: translateY(-2px); }
+
+        /* CARDS GRID */
+        .ds-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1px; background: var(--shadow); border: 1px solid var(--shadow); }
+        .ds-card {
+            background: var(--warm-white); padding: 2rem; display: flex;
+            flex-direction: column; justify-content: space-between; gap: 1rem;
+            transition: background 0.3s ease;
+            animation: fu 0.5s ease-out backwards;
+        }
+        .ds-card:nth-child(1){animation-delay:0.1s} .ds-card:nth-child(2){animation-delay:0.15s}
+        .ds-card:nth-child(3){animation-delay:0.2s}  .ds-card:nth-child(4){animation-delay:0.25s}
+        .ds-card:nth-child(5){animation-delay:0.3s}  .ds-card:nth-child(6){animation-delay:0.35s}
+        .ds-card:hover { background: var(--silk); }
+        .ds-card-num { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--gold); }
+        .ds-card-title { font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--espresso); font-weight: 500; margin-bottom: 0.5rem; }
+        .ds-card-text { font-size: 0.84rem; line-height: 1.75; color: #6b5a4e; flex: 1; }
+        .ds-card-link {
+            display: inline-block; font-size: 0.65rem; letter-spacing: 0.18em;
+            text-transform: uppercase; color: var(--caramel); text-decoration: none;
+            border-bottom: 1px solid var(--caramel); padding-bottom: 2px; width: fit-content;
+            transition: opacity 0.3s; margin-top: 0.5rem;
+        }
+        .ds-card-link:hover { opacity: 0.7; }
+
+        /* DETAIL VIEW */
+        .ds-detail { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 3rem 4rem 5rem; animation: fu 0.8s ease-out 0.1s both; }
+        .ds-detail h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; color: var(--espresso); margin-bottom: 1.5rem; line-height: 1.15; }
+        .ds-detail h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; color: var(--mocha); margin: 2.5rem 0 1rem; }
+        .ds-detail p { font-size: 0.92rem; line-height: 1.9; color: #6b5a4e; margin-bottom: 1.25rem; }
+        .ds-detail img { max-width: 100%; border-radius: 2px; margin: 1.5rem 0; border: 1px solid var(--shadow); }
+        .ds-detail hr { border: none; border-top: 1px solid var(--shadow); margin: 2rem 0; }
+        .ds-detail .contrast { background: var(--warm-white); border-left: 3px solid var(--caramel); padding: 1.5rem; font-size: 0.9rem; line-height: 1.85; color: #6b5a4e; border-radius: 0 2px 2px 0; margin-bottom: 2rem; }
+        .ds-detail ul, .ds-detail ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+        .ds-detail li { font-size: 0.9rem; line-height: 1.85; color: #6b5a4e; margin-bottom: 0.4rem; }
+
+        /* DETAIL nav */
+        .ds-detail-nav { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--shadow); }
+        .ds-detail-nav a { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; padding: 0.65rem 1.25rem; border-radius: 2px; transition: all 0.3s; }
+        .ds-detail-nav .back-summary { background: transparent; color: var(--dust); border: 1px solid var(--shadow); }
+        .ds-detail-nav .back-summary:hover { border-color: var(--caramel); color: var(--caramel); }
+        .ds-detail-nav .back-home { background: var(--espresso); color: var(--cream); }
+        .ds-detail-nav .back-home:hover { background: var(--mocha); }
+
+        /* FOOTER */
+        .ds-footer { position: relative; z-index: 1; border-top: 1px solid var(--shadow); padding: 1.2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
+        .ds-footer a { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; color: var(--dust); display: flex; align-items: center; gap: 0.4rem; transition: color 0.3s; }
+        .ds-footer a:hover { color: var(--caramel); }
+
+        @keyframes fd { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes fu { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+        @media(max-width:768px){
+            .ds-nav,.ds-summary,.ds-detail,.ds-footer{padding-left:1.5rem;padding-right:1.5rem;}
+            .ds-hero-row{grid-template-columns:1fr;}
+        }
+    </style>
+</head>
+<body>
+
+<nav class="ds-nav">
+    <a href="/" class="ds-logo">Deep Style <span>AI</span></a>
+    <a href="/" class="ds-nav-back">← Trang chủ</a>
+</nav>
+
+{% if view == 'summary' or not view %}
+<div class="ds-summary">
+    <div class="ds-hero-row">
+        <img class="ds-hero-img" src="{% block hero_img %}{% endblock %}" alt="Color palette">
+        <div>
+            <div class="ds-hero-eyebrow">Kết quả phân tích cá nhân</div>
+            <h1 class="ds-hero-title">{% block header %}{% endblock %}</h1>
+            <p class="ds-hero-text">{% block summary_text %}{% endblock %}</p>
+            <a href="?view=detail" class="ds-cta">Xem tư vấn chi tiết →</a>
+        </div>
+    </div>
+
+    <div class="ds-cards">
+        {% block cards %}{% endblock %}
+    </div>
+</div>
+
+<footer class="ds-footer">
+    <a href="/">← Trang chủ</a>
+    <span style="font-size:0.65rem;color:var(--dust);letter-spacing:0.15em;">Deep Style AI</span>
+</footer>
+
+{% else %}
+<div class="ds-detail">
+    {% block detail_content %}{% endblock %}
+    <div class="ds-detail-nav">
+        <a href="?view=summary" class="back-summary">← Quay lại tổng quát</a>
+        <a href="/" class="back-home">Trang chủ</a>
+    </div>
+</div>
+{% endif %}
+
+</body>
+</html>

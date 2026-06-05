@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Shape — Deep Style AI</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/shared.css">
+    <style>
+        .measure-form {
+            width: 100%;
+            max-width: 560px;
+            background: var(--warm-white);
+            border: 1px solid rgba(44,26,14,0.08);
+            border-radius: 2px;
+            padding: 2.5rem;
+        }
+        .measure-title {
+            font-size: 0.68rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--caramel);
+            margin-bottom: 2rem;
+        }
+        .submit-btn {
+            width: 100%;
+            background: var(--espresso);
+            color: var(--cream);
+            border: none;
+            padding: 1rem;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 2px;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        .submit-btn:hover { background: var(--mocha); transform: translateY(-2px); }
+        .measure-tip {
+            font-size: 0.75rem;
+            color: var(--dust);
+            font-style: italic;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .unit-tag {
+            font-size: 0.65rem;
+            color: var(--dust);
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body>
+    <nav class="page-nav">
+        <a href="/" class="nav-logo">Deep Style <span>AI</span></a>
+        <a href="/" class="nav-back">Trang chủ</a>
+    </nav>
+
+    <div class="page-hero">
+        <div class="page-eyebrow">Feature 03</div>
+        <h1 class="page-title">Body<br><em>Shape</em></h1>
+        <p class="page-subtitle">Phân tích tỉ lệ vóc dáng — gợi ý phong cách ăn mặc tôn dáng</p>
+    </div>
+
+    <div class="upload-zone">
+        <div class="measure-form">
+            <div class="measure-title">Nhập số đo cơ thể <span class="unit-tag">(cm)</span></div>
+            <form action="/body_shape" method="POST" enctype="multipart/form-data" id='form'>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="bust">Vòng ngực — Bust</label>
+                        <input class="input-field" type="text" name="Bust" id="bust" placeholder="e.g. 86">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="waist">Vòng eo — Waist</label>
+                        <input class="input-field" type="text" name="Waist" id="waist" placeholder="e.g. 68">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="hip">Vòng mông — Hip</label>
+                        <input class="input-field" type="text" name="Hip" id="hip" placeholder="e.g. 92">
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">Phân tích vóc dáng →</button>
+            </form>
+            <div class="measure-tip">Đo khi đứng thẳng, đơn vị cm, không thở căng bụng</div>
+        </div>
+    </div>
+
+    <div class="result-area">
+        {% if body_shape != 'Invalid measurements' %}
+            {% if msg %}
+            <div class="result-card">
+                <div class="result-label-text">Kết quả phân tích</div>
+                <div class="result-msg">{{ msg }}</div>
+                {% if body_shape %}
+                <div class="result-value">{{ body_shape }}</div>
+                {% set body_shape_ = body_shape.replace(" ", "_") | lower %}
+                <a href="/body_shape/{{body_shape_}}" class="result-cta">Xem gợi ý phong cách →</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="result-card">
+                <div class="result-label-text">Lưu ý</div>
+                <div class="result-msg">Không thể nhận diện. Vui lòng nhập số đo chính xác.</div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="page-footer">
+        <a href="/" class="back_home_button">Trang chủ</a>
+    </div>
+
+    <script src="static/js/body_shape.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+{% extends "base_result.html" %}
+
+{% block title %}Personal Color: {{ color_name | title }}{% endblock %}
+
+{% block header %}Nhóm màu {{ color_name | replace('_', ' ') | title }}{% endblock %}
+
+{% block hero_img
+%}https://images.unsplash.com/photo-1523450001312-daa4e2e12444?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80{% endblock
+%}
+
+{% block summary_text %}
+{{ color_name | replace('_', ' ') | title }} không chỉ là một nhóm màu đơn thuần, mà chính là bản tuyên ngôn không lời
+về phong cách, là chiếc chìa khóa vàng khai mở vẻ đẹp tiềm ẩn và thần thái độc bản vốn có của riêng bạn. Mỗi một sắc độ
+trong bảng màu này đều là kết tinh từ những nghiên cứu chuyên sâu về sắc tố, được các chuyên gia hàng đầu tuyển chọn tỉ
+mỉ để tạo nên một bản giao hưởng màu sắc hoàn mỹ, cộng hưởng và hòa quyện tuyệt đối với sắc tố da, màu mắt và mái tóc tự
+nhiên của bạn. Hãy xem đây là một cuộc hành trình khám phá bản thân, sẵn sàng để tỏa sáng rạng rỡ và chinh phục mọi ánh
+nhìn với sự tự tin và vẻ đẹp chân thực nhất.
+{% endblock %}
+
+{% block cards %}
+<div class="ds-card">
+    <h2>Bảng màu chủ đạo</h2>
+    <p>Khám phá bộ sưu tập những tông màu tinh hoa, được ví như những nốt nhạc chính trong bản giao hưởng phong cách của
+        bạn. Chúng được thiết kế để cộng hưởng và tôn vinh hoàn hảo sắc tố tự nhiên, làm bừng sáng làn da, tạo chiều sâu
+        cho đôi mắt và mang lại một vẻ ngoài tươi tắn, tràn đầy năng lượng tích cực.</p>
+    <a href="?view=detail#section1" class="ds-card-link">Chi tiết</a>
+</div>
+<div class="ds-card">
+    <h2>Phong cách phối đồ</h2>
+    <p>Nắm vững bí quyết lựa chọn chất liệu mềm mại như lụa, cashmere, phom dáng tinh tế tôn vinh từng đường nét cơ thể
+        và những họa tiết trang nhã, sang trọng. Chúng tôi sẽ hướng dẫn bạn cách kiến tạo nên những bộ trang phục đẳng
+        cấp, thể hiện trọn vẹn cá tính và khí chất độc đáo trong nhóm màu định mệnh của bạn.</p>
+    <a href="?view=detail#section2" class="ds-card-link">Chi tiết</a>
+</div>
+<div class="ds-card">
+    <h2>Màu tóc gợi ý</h2>
+    <p>Lựa chọn màu tóc không chỉ là một sự thay đổi, mà là một nghệ thuật kiến tạo vầng hào quang cho khuôn mặt. Hãy
+        cùng tìm ra sắc độ nhuộm lý tưởng, từ những ánh highlight tinh tế đến tông màu nhuộm tổng thể, giúp tôn vinh làn
+        da, làm bừng sáng ngũ quan và tạo nên một điểm nhấn sang trọng, cuốn hút không thể rời mắt.</p>
+    <a href="?view=detail#section2" class="ds-card-link">Chi tiết</a>
+</div>
+<div class="ds-card">
+    <h2>Bí quyết trang điểm</h2>
+    <p>Học cách sử dụng các tông màu son, phấn má và phấn mắt một cách điêu luyện và chuyên nghiệp. Mỗi lựa chọn màu sắc
+        đều nhằm mục đích tạo nên vẻ đẹp thanh thoát, rạng rỡ tựa sương mai, che giấu đi những mệt mỏi và khuếch đại nét
+        đẹp tự nhiên, đảm bảo sự hài hòa tuyệt đối với tổng thể diện mạo của bạn.</p>
+    <a href="?view=detail#section3" class="ds-card-link">Chi tiết</a>
+</div>
+<div class="ds-card">
+    <h2>Màu sắc cần tránh</h2>
+    <p>Nhận diện và thấu hiểu những tông màu đối nghịch có thể vô tình làm làn da bạn trở nên xỉn màu, thiếu sức sống
+        hoặc làm lộ các khuyết điểm không đáng có. Việc nắm rõ những gam màu này không phải là giới hạn, mà là một lựa
+        chọn thông thái để bạn luôn xuất hiện trong phiên bản hoàn hảo và tự tin nhất.</p>
+    <a href="?view=detail#section-avoid" class="ds-card-link">Chi tiết</a>
+</div>
+<div class="ds-card">
+    <h2>Phụ kiện tinh tế</h2>
+    <p>Nghệ thuật hoàn thiện một phong cách đẳng cấp luôn nằm ở những chi tiết nhỏ nhất. Hãy khám phá chất liệu kim loại
+        (vàng ấm, bạc lạnh, bạch kim kiêu sa) và các loại đá quý mang năng lượng phù hợp để tạo nên điểm nhấn cuối cùng
+        đầy tinh tế, thắp sáng toàn bộ trang phục và khẳng định gu thẩm mỹ của bạn.</p>
+    <a href="?view=detail#section-acc" class="ds-card-link">Chi tiết</a>
+</div>
+{% endblock %}
+
+{% block detail_content %}
+<h1 style="font-family:'Cormorant Garamond', serif; font-size:2.5rem; font-weight:300; color:var(--espresso); margin-bottom:1.5rem;">{{ color_name | replace('_', ' ') | title }}: Tư vấn chi tiết</h1>
+<p class="contrast">
+    Dựa trên sự phân tích chuyên sâu và toàn diện về sắc độ ẩn của da (undertone), độ tương phản giữa làn da, màu mắt và
+    mái tóc, nhóm màu này chính là mật mã phong cách được sinh ra để kiến tạo nên một vẻ đẹp độc bản, hài hòa và chân
+    thực nhất dành riêng cho bạn. Đây không chỉ là một kết quả phân tích, mà là một lộ trình giúp bạn hiểu sâu hơn về
+    bản thân và xây dựng một hình ảnh cá nhân đầy cuốn hút, bền vững với thời gian.
+</p>
+<div style="text-align: center;" id="section1">
+    <img src="https://images.unsplash.com/photo-1523450001312-daa4e2e12444?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        width="600">
+</div>
+<hr>
+<div id="section2">
+    <h1>Phối đồ & Tóc chuyên nghiệp</h1>
+    <p>Việc chọn đúng trang phục và màu tóc trong bảng màu cá nhân sẽ giúp bạn xây dựng một tủ đồ thông minh, linh hoạt
+        và đầy quyền năng. Hãy tưởng tượng một tủ đồ "con nhộng" (capsule wardrobe) nơi mỗi món đồ đều có thể dễ dàng
+        kết hợp với nhau một cách hoàn hảo, từ những bộ cánh công sở thanh lịch, những chiếc đầm tiệc sang trọng cho đến
+        những khoảnh khắc dạo phố thường ngày đầy ngẫu hứng. Hãy ưu tiên những chất liệu vải cao cấp, những đường cắt
+        may tôn dáng và đừng ngần ngại thử nghiệm các cách phối màu đơn sắc (monochromatic) hoặc tương đồng (analogous)
+        để tạo nên chiều sâu và sự tinh tế cho tổng thể. Một mái tóc với màu sắc phù hợp sẽ là chiếc khung hoàn hảo,
+        giúp định hình và nâng tầm toàn bộ diện mạo, khiến bạn luôn tự tin và nổi bật trong mọi hoàn cảnh.</p>
+    <img src="https://images.unsplash.com/photo-1490481658327-47b48a3c3175?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        width="600">
+</div>
+<hr>
+<div id="section3">
+    <h1>Bí kíp Trang điểm</h1>
+    <p>Những tông màu trang điểm phù hợp ví như một lớp màng lọc thần kỳ, một cây đũa phép giúp che mờ đi những khuyết
+        điểm nhỏ và khuếch đại tối đa những nét đẹp tự nhiên vốn có của bạn. Thay vì chạy theo xu hướng, hãy tập trung
+        vào việc tạo ra một vẻ đẹp vượt thời gian. Một lớp nền mỏng nhẹ tiệp vào da, một chút phấn má ửng hồng tự nhiên
+        như thể bạn vừa đi dạo trong vườn sớm, một đôi mắt được tô điểm bằng gam màu khói mềm mại và một đôi môi căng
+        mọng với sắc son hoàn hảo. Chúng không chỉ là bạn đồng hành cho vẻ ngoài rạng ngời sức sống, mà còn là vũ khí bí
+        mật giúp gương mặt bạn luôn giữ được sự tươi tắn, thanh thoát và tràn đầy sinh khí suốt cả ngày dài.</p>
+    <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        width="600">
+</div>
+
+<h1 id="section-avoid">Những điều nên tránh</h1>
+<p class="morning-breeze">
+    Để bảo toàn sự hài hòa và vẻ đẹp tự nhiên, hãy lưu ý hạn chế những gam màu có sắc độ quá chói, quá tương phản hoặc
+    mang undertone đối lập hoàn toàn với bảng màu cá nhân của bạn. Những màu sắc này có thể phá vỡ sự cân bằng, tạo ra
+    những vùng bóng xám không mong muốn trên khuôn mặt, làm lộ rõ quầng thâm mắt và vô tình khiến bạn trông mệt mỏi, kém
+    sắc. Việc nhận diện và lựa chọn một cách thông thái sẽ giúp bạn tránh được những lỗi thời trang không đáng có, đảm
+    bảo rằng bạn luôn xuất hiện với thần thái đỉnh cao và phong độ tốt nhất trong mọi khoảnh khắc.
+</p>
+
+<h1 id="section-acc">Trang sức & Phụ kiện</h1>
+<p>Sự lựa chọn trang sức và phụ kiện hoàn hảo sẽ là nốt thăng hoa cuối cùng, thắp sáng toàn bộ diện mạo của bạn. Tùy
+    thuộc vào sắc tố ấm hay lạnh của nhóm màu, hãy ưu tiên các kim loại tương ứng như vàng ấm, vàng hồng cho tông ấm
+    hoặc bạc, bạch kim, vàng trắng cho tông lạnh. Những phụ kiện này sẽ phản chiếu ánh sáng một cách tinh tế lên làn da,
+    tạo hiệu ứng bắt sáng tự nhiên và nâng tầm đẳng cấp cho bộ trang phục. Đừng quên mở rộng sang các phụ kiện khác như
+    khăn lụa, túi xách, thắt lưng và mắt kính. Một chiếc túi xách da màu cognac ấm áp hay một chiếc khăn choàng lụa màu
+    xanh cobalt mát lạnh có thể trở thành điểm nhấn đắt giá, thể hiện sự am tường về phong cách của bạn.</p>
+{% endblock %}

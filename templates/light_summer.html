@@ -1,0 +1,135 @@
+{% extends "base_result.html" %}
+
+{% block title %}Personal Color: {{ color_name | title }}{% endblock %}
+
+{% block header %}Nhóm màu {{ color_name | replace('_', ' ') | title }}{% endblock %}
+
+{% block hero_img %}{{ url_for('static', filename='image/light-summer-color-palette-colorbook.jpg') }}{% endblock %}
+
+{% block summary_text %}
+Nhóm màu {{ color_name | replace('_', ' ') | title }} chính là bản giao hưởng tuyệt mỹ của những sắc màu tinh khôi, dịu
+dàng và thanh khiết, được ví như một món quà độc đáo mà tạo hóa dành riêng để tôn vinh trọn vẹn vẻ đẹp thanh thoát và
+khí chất nhẹ nhàng của bạn. Hãy nhắm mắt lại và hình dung một buổi sớm mùa hạ trong lành, nơi những tia nắng đầu ngày
+mềm mại, óng ả xuyên qua làn sương mỏng, nhuộm cả không gian bằng một thứ ánh sáng huyền ảo – đó chính là tinh thần chủ
+đạo, là linh hồn của bảng màu này. Mỗi một sắc độ, từ tông xanh da trời êm dịu đến sắc hồng phấn ngọt ngào, đều đã được
+các chuyên gia hàng đầu tuyển chọn và tinh chỉnh một cách tỉ mỉ nhất. Mục đích tối thượng là tạo ra sự hòa quyện tuyệt
+đối với sắc tố da mát lạnh, màu mắt trong trẻo và mái tóc tự nhiên của bạn, từ đó khơi dậy một vẻ đẹp rạng rỡ, tinh khôi
+và đầy tự tin tỏa ra từ sâu bên trong cốt cách con người bạn.
+{% endblock %}
+
+{% block cards %}
+<div class="ds-card">
+    <h2>Bảng màu chủ đạo</h2>
+    <p>Khám phá vũ trụ màu sắc được sinh ra để dành riêng cho bạn. Đây không chỉ là một danh sách, mà là một tuyên ngôn
+        về vẻ đẹp thanh tú. Những gam màu mát dịu, trong trẻo như xanh bạc hà, hồng thạch anh, tím tử đinh hương và xám
+        bồ câu sẽ cộng hưởng hoàn hảo với sắc tố da, mang lại vẻ ngoài tươi sáng, rạng ngời và tràn đầy sức sống một
+        cách tự nhiên nhất.</p>
+    <a href="?view=detail#section1" class="ds-card-link">Chi tiết</a>
+</div>
+<div class="ds-card">
+    <h2>Phong cách phối đồ</h2>
+    <p>Bí quyết để nâng tầm phong cách nằm ở việc lựa chọn chất liệu mềm mại, có độ rũ tự nhiên như lụa habotai, voan
+        tơ, chiffon, cotton Pima thượng hạng hay len cashmere. Những kiểu dáng trang phục thanh lịch, bay bổng như váy
+        chữ A, áo blouse tay phồng, quần culottes ống rộng sẽ tôn vinh trọn vẹn vẻ đẹp của bảng màu và khí chất của bạn.
+        Sự tinh tế nằm trong từng thớ vải và đường kim mũi chỉ.</p>
+    <a href="?view=detail#section2" class="ds-card-link">Chi tiết</a>
+</div>
+<div class="ds-card">
+    <h2>Màu tóc gợi ý</h2>
+    <p>Mái tóc chính là chiếc vương miện quý giá nhất. Hãy lựa chọn các tông màu nhuộm có ánh tro (ashy) hoặc nền lạnh
+        để trung hòa mọi sắc tố vàng không mong muốn. Những màu như nâu khói lạnh, vàng bạch kim, vàng dâu tây tông lạnh
+        hay thậm chí là các màu pastel ánh bạc sẽ giúp bừng sáng làn da, tạo nên một tổng thể hài hòa, sang trọng và thu
+        hút mọi ánh nhìn.</p>
+    <a href="?view=detail#section2" class="ds-card-link">Chi tiết</a>
+</div>
+<div class="ds-card">
+    <h2>Bí quyết trang điểm</h2>
+    <p>Nghệ thuật trang điểm của bạn là "vẻ đẹp không cần cố gắng" (effortless beauty). Hãy đắm mình trong những sắc son
+        hồng đất, hồng baby, đỏ cherry mọng nước. Một lớp nền mỏng nhẹ, trong veo tựa sương mai kết hợp với phấn má hồng
+        phớt nhẹ nhàng và đôi mắt được tô điểm bằng gam màu pastel như tím lavender, xanh bạc hà sẽ là chìa khóa vàng
+        giúp gương mặt bạn luôn rạng rỡ, thanh thoát và trong trẻo.</p>
+    <a href="?view=detail#section3" class="ds-card-link">Chi tiết</a>
+</div>
+<div class="ds-card">
+    <h2>Màu sắc cần tránh</h2>
+    <p>Để bảo vệ hào quang tự nhiên của mình, hãy tỉnh táo nhận diện những "kẻ phá bĩnh" trong thế giới màu sắc. Các
+        tông màu quá nóng, quá chói hoặc quá đậm như đen tuyền, cam cháy, vàng mù tạt, xanh olive sẽ phá vỡ sự cân bằng
+        tinh tế, khiến làn da trông xỉn màu, mệt mỏi và thiếu sức sống. Hãy ưu tiên sự nhẹ nhàng thay vì tương phản gay
+        gắt.</p>
+    <a href="?view=detail#section-avoid" class="ds-card-link">Chi tiết</a>
+</div>
+<div class="ds-card">
+    <h2>Phụ kiện tinh tế</h2>
+    <p>Hoàn thiện vẻ ngoài hoàng gia của bạn với trang sức bạc cao cấp, bạch kim, vàng trắng hoặc vàng hồng có tông
+        lạnh. Những thiết kế tinh xảo, thanh mảnh với điểm nhấn là ngọc trai Akoya, đá mặt trăng, kim cương hay đá
+        aquamarine sẽ là nốt nhạc cuối cùng hoàn thiện bản giao hưởng phong cách, tôn lên khí chất sang trọng và gu thẩm
+        mỹ tinh tế của bạn.</p>
+    <a href="?view=detail#section-acc" class="ds-card-link">Chi tiết</a>
+</div>
+{% endblock %}
+
+{% block detail_content %}
+<h1 style="font-family:'Cormorant Garamond', serif; font-size:2.5rem; font-weight:300; color:var(--espresso); margin-bottom:1.5rem;">{{ color_name | replace('_', ' ') | title }}: Tư vấn chi tiết</h1>
+<p class="contrast">
+    Kết quả phân tích chuyên sâu, dựa trên sự hòa quyện tinh tế giữa sắc độ da (undertone) mát lạnh, màu mắt trong trẻo
+    tựa pha lê và ánh sắc tự nhiên của mái tóc, đã khẳng định một cách chắc chắn rằng bạn thuộc về nhóm màu {{
+    color_name | replace('_', ' ') | title }}. Đây không đơn thuần là một bảng màu, mà chính là tấm bản đồ dẫn lối, là
+    chìa khóa vàng mở ra cánh cửa của vẻ đẹp độc bản. Mọi lựa chọn từ đây về sau đều là một bước đi thông minh nhằm tôn
+    vinh con người thật, khí chất thật và vẻ đẹp vốn có của bạn, giúp bạn tỏa sáng mà không cần phải gắng gượng.
+</p>
+<div style="text-align: center;" id="section1">
+    <img src="{{ url_for('static', filename='image/light-summer-color-palette-colorbook.jpg') }}" width="600">
+</div>
+<hr>
+<div id="section2">
+    <h1>Phối đồ & Tóc chuyên nghiệp</h1>
+    <p>Để thực sự tỏa sáng và khai thác tối đa tiềm năng của bảng màu {{ color_name | replace('_', ' ') | title }}, hãy
+        để tủ đồ của bạn là một thế giới của những chất liệu mềm mại, bay bổng và có độ thở. Ưu tiên hàng đầu là lụa
+        satin, voan tơ, chiffon, linen cao cấp, hay cashmere mỏng nhẹ. Những chất liệu này không chỉ mang lại cảm giác
+        dễ chịu mà còn tạo ra hiệu ứng ánh sáng dịu nhẹ, cộng hưởng tuyệt vời với các gam màu pastel. Về kiểu dáng, hãy
+        hướng đến sự thanh lịch, tối giản hoặc các chi tiết xếp nếp, bèo nhún nhẹ nhàng. Hãy thử kết hợp một chiếc áo
+        blouse màu xanh da trời nhạt với chân váy midi lụa màu xám bồ câu cho một ngày làm việc hiệu quả. Hay khoác lên
+        mình một chiếc đầm maxi màu hồng phấn bay bổng cho những buổi hẹn hò lãng mạn. Phong cách của bạn sẽ trở nên nổi
+        bật và đầy khí chất, dù là trong môi trường công sở chuyên nghiệp hay những buổi dạo phố cuối tuần thư thái.</p>
+    <p>Đối với mái tóc, hãy xem nó như một phần không thể tách rời của tổng thể trang phục. Các tông màu nhuộm lý tưởng
+        phải có gốc lạnh, chẳng hạn như nâu sô-cô-la sữa ánh khói, vàng cát (sandy blonde) hay màu be tro tinh tế. Những
+        màu sắc này sẽ loại bỏ hoàn toàn ánh vàng đồng thiếu sang trọng, giúp làn da của bạn trông sáng và trong hơn.
+        Một mái tóc được chăm chút với màu sắc phù hợp sẽ là tuyên ngôn thầm lặng nhưng mạnh mẽ nhất về gu thẩm mỹ đẳng
+        cấp của bạn.</p>
+    <img src="https://images.unsplash.com/photo-1490481658327-47b48a3c3175?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        width="600">
+</div>
+<hr>
+<div id="section3">
+    <h1>Bí kíp Trang điểm</h1>
+    <p>Lối trang điểm "sương khói" nhẹ nhàng, trong veo (ethereal glow) chính là chân ái của bạn. Triết lý ở đây là
+        "trang điểm để đẹp hơn chứ không phải để trở thành người khác". Hãy bắt đầu với một lớp kem nền mỏng nhẹ có khả
+        năng bắt sáng tốt, tạo hiệu ứng làn da căng bóng, ngậm nước. Tiếp đó, hãy dùng phấn má dạng kem có tông hồng
+        baby hoặc hồng đào lạnh để tạo hiệu ứng ửng hồng tự nhiên từ bên trong. Đôi mắt sẽ trở nên có hồn và mơ màng hơn
+        với các gam màu phấn mắt như xám tro, tím lavender nhạt, xanh bạc hà hay hồng vỏ đỗ. Thay vì kẻ mắt đen sắc lẹm,
+        hãy thử đường kẻ màu nâu xám hoặc xám tro để ánh nhìn mềm mại hơn. Hoàn thiện vẻ ngoài với một thỏi son satin
+        hoặc son bóng màu hồng dâu, hồng nude, hay đỏ cherry nhạt để gương mặt luôn tươi tắn và bừng sáng sức sống.</p>
+    <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        width="600">
+</div>
+
+<h1 id="section-avoid">Những điều nên tránh</h1>
+<p class="morning-breeze">
+    Để bảo toàn và phát huy vẻ đẹp trong trẻo, bạn cần nhận biết và hạn chế tối đa những gam màu "kẻ thù". Hãy dứt khoát
+    nói không với màu đen tuyền (thay bằng màu xanh navy đậm hoặc xám than), màu cam cháy, vàng mù tạt, và các tông màu
+    đất ấm nóng như nâu terracotta. Những màu sắc này, với sắc tố ấm và độ tương phản quá cao, sẽ lấn át hoàn toàn vẻ
+    đẹp tự nhiên của bạn. Chúng tạo ra một cuộc đối đầu không cân sức về màu sắc, khiến làn da bạn ngay lập tức trông
+    mệt mỏi, nhợt nhạt, làm lộ rõ các khuyết điểm và khiến tổng thể trở nên mất cân đối, thiếu đi sự hài hòa tinh tế vốn
+    có của bạn.
+</p>
+
+<h1 id="section-acc">Trang sức & Phụ kiện</h1>
+<p>Phụ kiện chính là nét chấm phá cuối cùng, là dấu ấn cá nhân để tạo nên sự hoàn hảo. Ưu tiên hàng đầu của bạn là các
+    loại trang sức làm từ bạc, bạch kim, và vàng trắng – những kim loại có ánh sắc lạnh sẽ cộng hưởng một cách tuyệt vời
+    với làn da của bạn. Ngay cả khi chọn vàng hồng, hãy tìm kiếm loại có sắc độ lạnh, nghiêng về hồng nhiều hơn là đồng.
+    Khi lựa chọn đá quý, hãy tìm đến vẻ đẹp thanh khiết của ngọc trai, sự huyền ảo của đá mặt trăng (moonstone), sự
+    trong trẻo của aquamarine hay sự lấp lánh tinh khôi của kim cương. Về kiểu dáng, những thiết kế thanh mảnh, tối
+    giản, và trang nhã sẽ luôn là lựa chọn thông minh hơn những món phụ kiện quá to bản, hầm hố. Một chiếc vòng cổ sợi
+    mảnh, một đôi khuyên tai nụ ngọc trai hay một chiếc lắc tay tinh xảo cũng đủ để tạo nên điểm nhấn đắt giá, khẳng
+    định đẳng cấp và sự tinh tế của bạn.</p>
+{% endblock %}

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Style AI — Fashion Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/themes.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --cream: #f5f0e8;
+            --warm-white: #faf8f4;
+            --espresso: #2c1a0e;
+            --mocha: #6b3d2a;
+            --caramel: #c4843b;
+            --gold: #d4aa5f;
+            --dust: #b8a99a;
+            --silk: #ede5d8;
+        }
+
+        html, body {
+            height: 100%;
+            background: var(--cream);
+            color: var(--espresso);
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+        }
+
+        /* NAV */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 4rem;
+            border-bottom: 1px solid rgba(44,26,14,0.08);
+            animation: fadeDown 0.8s ease-out forwards;
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--espresso);
+        }
+        .nav-tag {
+            font-size: 0.68rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--dust);
+        }
+
+        /* HERO */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            min-height: calc(100vh - 90px - 70px);
+            padding: 4rem 4rem 2rem;
+            gap: 6rem;
+        }
+
+        .hero-text { animation: fadeLeft 1s ease-out 0.2s both; }
+
+        .hero-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--caramel);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .hero-eyebrow::before {
+            content: '';
+            display: inline-block;
+            width: 2rem;
+            height: 1px;
+            background: var(--caramel);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3.5rem, 6vw, 6rem);
+            font-weight: 300;
+            line-height: 1.05;
+            color: var(--espresso);
+            margin-bottom: 1.5rem;
+        }
+        h1 em {
+            font-style: italic;
+            color: var(--mocha);
+        }
+
+        .hero-desc {
+            font-size: 0.95rem;
+            line-height: 1.85;
+            color: #6b5a4e;
+            max-width: 38ch;
+            margin-bottom: 3rem;
+        }
+
+        /* FEATURE CARDS */
+        .feature-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: rgba(44,26,14,0.08);
+            border: 1px solid rgba(44,26,14,0.08);
+            border-radius: 2px;
+            overflow: hidden;
+            animation: fadeLeft 1s ease-out 0.4s both;
+        }
+
+        .feature-item {
+            background: var(--warm-white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 100%;
+            background: var(--gold);
+            opacity: 0.08;
+            transition: width 0.4s ease;
+        }
+        .feature-item:hover::before { width: 100%; }
+        .feature-item:hover { background: var(--silk); }
+
+        .feature-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .feature-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--gold);
+            min-width: 2rem;
+            line-height: 1;
+        }
+        .feature-info {}
+        .feature-title {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: var(--espresso);
+            margin-bottom: 0.25rem;
+        }
+        .feature-sub {
+            font-size: 0.8rem;
+            color: var(--dust);
+            font-style: italic;
+        }
+        .feature-arrow {
+            font-size: 1.2rem;
+            color: var(--caramel);
+            transition: transform 0.3s ease;
+        }
+        .feature-item:hover .feature-arrow { transform: translateX(4px); }
+
+        /* RIGHT VISUAL */
+        .hero-visual {
+            position: relative;
+            height: 580px;
+            animation: fadeRight 1s ease-out 0.3s both;
+        }
+
+        .visual-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--silk) 0%, var(--cream) 60%, #e8ddd0 100%);
+            border-radius: 2px;
+        }
+
+        .visual-circle {
+            position: absolute;
+            border-radius: 50%;
+        }
+        .vc1 {
+            width: 280px; height: 280px;
+            background: radial-gradient(circle, rgba(196,132,59,0.15) 0%, transparent 70%);
+            top: 10%; left: 50%;
+            transform: translateX(-50%);
+        }
+        .vc2 {
+            width: 180px; height: 180px;
+            background: radial-gradient(circle, rgba(107,61,42,0.1) 0%, transparent 70%);
+            bottom: 20%; right: 10%;
+        }
+
+        .visual-lines {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            padding: 3rem;
+        }
+
+        .vl-word {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(4rem, 8vw, 7rem);
+            font-weight: 300;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(44,26,14,0.12);
+            line-height: 1;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            user-select: none;
+        }
+        .vl-word:nth-child(2) {
+            -webkit-text-stroke: 1px rgba(196,132,59,0.3);
+            font-style: italic;
+        }
+
+        .visual-badge {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 2.5rem;
+            background: var(--espresso);
+            color: var(--cream);
+            padding: 0.75rem 1.25rem;
+            border-radius: 2px;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+        .visual-badge span {
+            color: var(--gold);
+        }
+
+        .visual-accent-line {
+            position: absolute;
+            top: 2.5rem;
+            right: 2.5rem;
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--caramel), transparent);
+        }
+
+        /* FOOTER STRIP */
+        footer {
+            border-top: 1px solid rgba(44,26,14,0.08);
+            padding: 1.2rem 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: fadeUp 0.8s ease-out 0.6s both;
+        }
+        .footer-copy {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: var(--dust);
+        }
+        .footer-tag {
+            font-size: 0.7rem;
+            color: var(--dust);
+            font-style: italic;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeLeft {
+            from { opacity: 0; transform: translateX(-24px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeRight {
+            from { opacity: 0; transform: translateX(24px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 900px) {
+            nav, footer { padding: 1.5rem 2rem; }
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 3rem 2rem;
+                gap: 3rem;
+            }
+            .hero-visual { height: 320px; }
+            .vl-word { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <nav>
+        <div class="nav-logo">Deep Style <span style="color:var(--caramel)">AI</span></div>
+        <div style="display:flex;gap:1.5rem;align-items:center;">
+            <a href="/wardrobe" style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dust);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--caramel)'" onmouseout="this.style.color='var(--dust)'">Wardrobe</a>
+            <a href="/chatbot" style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dust);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--caramel)'" onmouseout="this.style.color='var(--dust)'">AI Chat</a>
+        </div>
+        <div class="nav-tag">Fashion Intelligence System</div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-text">
+            <div class="hero-eyebrow">Powered by AI</div>
+            <h1>Discover<br>Your <em>True</em><br>Aesthetic</h1>
+            <p class="hero-desc">
+                Hệ thống phân tích phong cách thời trang toàn diện — từ màu sắc cá nhân, hình dạng khuôn mặt đến vóc dáng cơ thể — để tìm ra vẻ đẹp độc bản của bạn.
+            </p>
+            <div class="feature-grid">
+                <a href="/personal_color" class="feature-item">
+                    <div class="feature-left">
+                        <div class="feature-num">01</div>
+                        <div class="feature-info">
+                            <div class="feature-title">Personal Color</div>
+                            <div class="feature-sub">Phân tích bảng màu cá nhân</div>
+                        </div>
+                    </div>
+                    <div class="feature-arrow">→</div>
+                </a>
+                <a href="/face_shape" class="feature-item">
+                    <div class="feature-left">
+                        <div class="feature-num">02</div>
+                        <div class="feature-info">
+                            <div class="feature-title">Face Shape</div>
+                            <div class="feature-sub">Nhận diện hình dạng khuôn mặt</div>
+                        </div>
+                    </div>
+                    <div class="feature-arrow">→</div>
+                </a>
+                <a href="/body_shape" class="feature-item">
+                    <div class="feature-left">
+                        <div class="feature-num">03</div>
+                        <div class="feature-info">
+                            <div class="feature-title">Body Shape</div>
+                            <div class="feature-sub">Phân tích tỉ lệ vóc dáng</div>
+                        </div>
+                    </div>
+                    <div class="feature-arrow">→</div>
+                </a>
+                
+                <!-- NÚt Wardrobe -->
+                <a href="/wardrobe" class="feature-item">
+                    <div class="feature-left">
+                        <div class="feature-num">04</div>
+                        <div class="feature-info">
+                            <div class="feature-title">Virtual Wardrobe</div>
+                            <div class="feature-sub">Tủ quần áo ảo + Gợi ý outfit</div>
+                        </div>
+                    </div>
+                    <div class="feature-arrow">→</div>
+                </a>
+
+                <!-- NÚt CHATBOT CHUYỂN HƯỚNG SANG TRANG FULL (KHÔNG DÙNG ONCLICK) -->
+                <a href="/chatbot" class="feature-item">
+                    <div class="feature-left">
+                        <div class="feature-num">05</div>
+                        <div class="feature-info">
+                            <div class="feature-title">AI Chatbot</div>
+                            <div class="feature-sub">Trợ lý thời trang cá nhân</div>
+                        </div>
+                    </div>
+                    <div class="feature-arrow">→</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="visual-bg"></div>
+            <div class="visual-circle vc1"></div>
+            <div class="visual-circle vc2"></div>
+            <div class="visual-lines">
+                <div class="vl-word">Style</div>
+                <div class="vl-word">Is</div>
+                <div class="vl-word">You</div>
+            </div>
+            <!-- Gender-adaptive photo -->
+            <div style="position:absolute;bottom:4rem;right:2rem;width:90px;height:90px;border-radius:50%;overflow:hidden;border:2px solid rgba(196,132,59,0.3);box-shadow:0 4px 16px rgba(44,26,14,0.15);transition:all 0.4s ease;">
+                <img id="hero-gender-img"
+                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80"
+                    data-female-src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80"
+                    data-male-src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80"
+                    alt="Fashion style" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div class="visual-accent-line"></div>
+            <div class="visual-badge">AI-Powered &nbsp;<span>Fashion Analysis</span></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-copy">© 2026 Deep Style AI</div>
+        <div class="footer-tag">Intelligence for personal style</div>
+    </footer>
+</div>
+</body>
+<script src="/static/js/emotional_signature.js" defer></script>
+<script src="/static/js/gender_switch.js" defer></script>
+</html>

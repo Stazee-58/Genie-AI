@@ -1,0 +1,126 @@
+{% extends "base_result.html" %}
+
+{% block title %}Personal Color: {{ color_name | title }}{% endblock %}
+
+{% block header %}Nhóm màu {{ color_name | replace('_', ' ') | title }}{% endblock %}
+
+{% block hero_img
+%}https://images.unsplash.com/photo-1523450001312-daa4e2e12444?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80{% endblock
+%}
+
+{% block summary_text %}
+Chào mừng bạn đến với cuộc hành trình khám phá thế giới màu sắc của riêng mình! {{ color_name | replace('_', ' ') |
+title }} không chỉ đơn thuần là một nhóm màu, mà chính là một tuyên ngôn đầy uy lực về vẻ đẹp độc bản, là mật mã thẩm mỹ
+giúp tôn vinh trọn vẹn từng đường nét, làn da và đánh thức khí chất tinh hoa tiềm ẩn bên trong bạn. Mỗi một sắc độ trong
+bản giao hưởng màu sắc này đều được các chuyên gia hàng đầu tuyển chọn và nghiên cứu dựa trên khoa học sắc tố, đảm bảo
+chúng cộng hưởng một cách hoàn hảo và tinh tế nhất với undertone trên da, ánh sắc của tóc và độ sâu của đôi mắt bạn. Hãy
+sẵn sàng để bước vào một chương mới của phong cách, nơi bạn sẽ toả sáng rạng rỡ, tự tin và đầy cuốn hút trong mọi khoảnh
+khắc với quyền năng của màu sắc cá nhân.
+{% endblock %}
+
+{% block cards %}
+<div class="section-card">
+    <h2>Bảng màu chủ đạo</h2>
+    <p>Đây chính là bản giao hưởng màu sắc được sáng tác dành riêng cho bạn. Như những nốt nhạc trầm bổng, các tone màu
+        này được thiết kế để hài hòa tuyệt đối với sắc tố tự nhiên của bạn, giúp làn da trở nên tươi tắn, trong trẻo và
+        tràn đầy sức sống một cách kỳ diệu, như thể được thắp sáng từ bên trong.</p>
+    <a href="?view=detail#section1" class="btn-detail">Chi tiết</a>
+</div>
+<div class="section-card">
+    <h2>Phong cách phối đồ</h2>
+    <p>Khám phá nghệ thuật kiến tạo một tủ đồ con nhộng lý tưởng, nơi mỗi món đồ đều là một tuyên ngôn phong cách. Chúng
+        tôi gợi ý những chất liệu mềm mại, bay bổng như lụa organza, voan tơ, satin hay cashmere, kết hợp cùng những
+        kiểu dáng trang phục thanh lịch, tinh tế nhất, giúp bạn xây dựng một phong cách vừa sang trọng, linh hoạt, vừa
+        bền vững với thời gian.</p>
+    <a href="?view=detail#section2" class="btn-detail">Chi tiết</a>
+</div>
+<div class="section-card">
+    <h2>Màu tóc gợi ý</h2>
+    <p>Một màu tóc phù hợp sẽ là chiếc khung hoàn hảo, là "vầng hào quang" cho khuôn mặt bạn. Hãy lựa chọn những gam màu
+        nhuộm có khả năng phản chiếu ánh sáng một cách tinh tế, giúp tôn lên làn da sáng khỏe, khiến đôi mắt thêm long
+        lanh và tạo ra một điểm nhấn sang trọng, thu hút mọi ánh nhìn ngưỡng mộ.</p>
+    <a href="?view=detail#section2" class="btn-detail">Chi tiết</a>
+</div>
+<div class="section-card">
+    <h2>Bí quyết trang điểm</h2>
+    <p>Lớp trang điểm lý tưởng là lớp trang điểm "trong veo như không", tôn vinh vẻ đẹp nguyên bản. Hãy cùng khám phá
+        những tone màu son, phấn má và phấn mắt sinh ra để dành cho bạn, mang lại vẻ đẹp rạng rỡ, thanh thoát và tự
+        nhiên nhất, như thể bạn vừa thức dậy với một làn da căng bóng và một thần thái tươi tắn vốn có.</p>
+    <a href="?view=detail#section3" class="btn-detail">Chi tiết</a>
+</div>
+<div class="section-card">
+    <h2>Màu sắc cần tránh</h2>
+    <p>Hiểu rõ những gam màu "kẻ thù" cũng quan trọng như việc nắm bắt những sắc màu "bạn thân". Những tone màu này có
+        thể vô tình tạo ra sự xung đột với sắc tố da, làm làn da bạn ngay lập tức bị xỉn màu, thiếu sức sống hoặc khiến
+        gương mặt trông mệt mỏi, lộ rõ khuyết điểm và thiếu đi sự tươi tắn vốn có.</p>
+    <a href="?view=detail#section-avoid" class="btn-detail">Chi tiết</a>
+</div>
+<div class="section-card">
+    <h2>Phụ kiện tinh tế</h2>
+    <p>Phụ kiện chính là dấu chấm hoàn mỹ, là chữ ký cá nhân cho mỗi bộ trang phục. Cùng tìm hiểu nghệ thuật lựa chọn
+        trang sức kim loại (vàng gold rực rỡ, bạc bạch kim tinh khôi hay vàng hồng thời thượng) và các kiểu dáng phụ
+        kiện hài hòa, giúp nâng tầm phong cách và tạo nên một tổng thể đẳng cấp, có chiều sâu.</p>
+    <a href="?view=detail#section-acc" class="btn-detail">Chi tiết</a>
+</div>
+{% endblock %}
+
+{% block detail_content %}
+<h1 class="entry-title">{{ color_name | replace('_', ' ') | title }}: Tư vấn chi tiết</h1>
+<p class="contrast">
+    Kết quả phân tích này không chỉ là một danh sách màu sắc, mà là một cuộc đối thoại tinh tế giữa khoa học sắc tố và
+    nghệ thuật thời trang đỉnh cao. Dựa trên sự hòa quyện độc đáo, duy nhất của sắc độ da (undertone), màu mắt tự nhiên
+    và ánh sắc tiềm ẩn của mái tóc, nhóm màu này được sinh ra để kiến tạo nên một vẻ đẹp độc bản, một ADN phong cách
+    không thể sao chép, dành riêng và duy nhất cho bạn. Đây là tấm bản đồ dẫn lối bạn đến phiên bản rạng rỡ nhất của
+    chính mình.
+</p>
+<div style="text-align: center;" id="section1">
+    <img src="https://images.unsplash.com/photo-1523450001312-daa4e2e12444?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        width="600">
+</div>
+<hr>
+<div id="section2">
+    <h1>Phối đồ & Tóc chuyên nghiệp</h1>
+    <p>Việc chọn đúng trang phục và màu tóc trong bảng màu cá nhân sẽ giúp bạn dễ dàng tỏa sáng và ghi dấu ấn sâu đậm
+        trong mọi hoàn cảnh, từ những cuộc họp quan trọng nơi công sở đến những buổi tiệc tối sang trọng hay chuyến dạo
+        phố cuối tuần thư thái. Hãy ưu tiên các chất liệu cao cấp, có khả năng tôn vinh đường nét cơ thể như lụa,
+        cashmere, linen hay tweed và kết hợp chúng với những gam màu trong bảng màu cá nhân để tạo nên sự gắn kết thị
+        giác hoàn hảo. Về mái tóc, một màu tóc được lựa chọn khéo léo không chỉ làm bừng sáng khuôn mặt, mà còn là một
+        tuyên ngôn về cá tính. Những kỹ thuật nhuộm tinh tế như balayage hay highlight với các tông màu phụ trợ trong
+        bảng màu của bạn sẽ tạo ra chiều sâu và sự chuyển động tự nhiên, giúp tổng thể phong cách trở nên hài hòa và ấn
+        tượng hơn bao giờ hết.</p>
+    <img src="https://images.unsplash.com/photo-1490481658327-47b48a3c3175?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        width="600">
+</div>
+<hr>
+<div id="section3">
+    <h1>Bí kíp Trang điểm</h1>
+    <p>Với nhóm màu cá nhân của bạn, nghệ thuật trang điểm nằm ở sự tinh giản và tôn vinh. Những tone màu nhẹ nhàng, tự
+        nhiên chính là người bạn đồng hành tuyệt vời nhất. Mục tiêu tối thượng là để thăng hoa những đường nét sẵn có,
+        chứ không phải che lấp chúng bằng những lớp màu dày cộm. Hãy bắt đầu với một lớp nền mỏng nhẹ, tệp hoàn toàn vào
+        undertone da để tạo hiệu ứng "làn da thứ hai". Kế đến, một chút má hồng dạng kem với sắc màu ửng lên tự nhiên
+        như một nụ hồng e ấp, một màu son hài hòa với sắc môi nguyên bản và một đôi mắt được tô điểm bằng những gam màu
+        trung tính tinh tế sẽ mang lại cho bạn một gương mặt rạng ngời sức sống, tươi trẻ và thanh lịch tuyệt đối. Vẻ
+        đẹp này đến từ sự tự tin, không phải từ lớp trang điểm.</p>
+    <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        width="600">
+</div>
+
+<h1 id="section-avoid">Những điều nên tránh</h1>
+<p class="morning-breeze">
+    Hãy lưu ý hạn chế, thậm chí là loại bỏ các màu sắc có độ tương phản quá cao hoặc tông màu quá chói, quá lạnh hoặc
+    quá nóng nếu chúng không nằm trong bảng màu được gợi ý. Những gam màu này có thể phá vỡ sự cân bằng tự nhiên một
+    cách tàn nhẫn, tạo ra những vùng bóng không mong muốn trên khuôn mặt, khiến làn da trông nhợt nhạt, mệt mỏi hoặc sạm
+    đi, và vô tình làm lộ rõ các khuyết điểm nhỏ như quầng thâm hay nếp nhăn. Việc nhận biết và tránh xa chúng không
+    phải là sự giới hạn, mà là một chiến lược thông minh giúp bạn luôn duy trì được vẻ ngoài hài hòa, thần thái và tràn
+    đầy năng lượng tích cực.
+</p>
+
+<h1 id="section-acc">Trang sức & Phụ kiện</h1>
+<p>Trang sức chính là thứ vũ khí bí mật, là nốt nhạc cuối cùng để hoàn thiện bản giao hưởng phong cách của bạn. Việc lựa
+    chọn chất liệu kim loại phù hợp với undertone sẽ giống như một lớp highlight tinh tế, đắt giá cho làn da. Với các
+    nhóm màu lạnh (cool undertone), hãy ưu tiên bạc, bạch kim hoặc vàng trắng để tôn lên sự trong trẻo, sang trọng.
+    Ngược lại, với các nhóm màu ấm (warm undertone), vàng gold, vàng hồng hay đồng sẽ mang đến vẻ ấm áp, rạng rỡ và
+    quyền lực. Đừng quên sức mạnh của những viên đá quý; hãy chọn những loại đá có màu sắc nằm trong bảng màu của bạn
+    (ví dụ: ngọc lục bảo cho nhóm màu Thu, sapphire cho nhóm màu Đông) để tạo nên sự đồng điệu tuyệt đối, tinh tế và
+    đẳng cấp.</p>
+{% endblock %}

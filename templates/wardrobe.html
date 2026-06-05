@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="warm_glow">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tủ Quần Áo Ảo — FashionMentor AI</title>
+    <meta name="description" content="Quản lý tủ đồ thông minh: tách nền tự động, phân loại AI, gợi ý outfit theo thời tiết mỗi ngày.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/themes.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --cream: #f5f0e8;
+            --warm-white: #faf8f4;
+            --espresso: #2c1a0e;
+            --mocha: #6b3d2a;
+            --caramel: #c4843b;
+            --gold: #d4aa5f;
+            --dust: #b8a99a;
+            --silk: #ede5d8;
+        }
+
+        html, body {
+            min-height: 100%;
+            background: var(--cream);
+            color: var(--espresso);
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 3rem;
+            border-bottom: 1px solid rgba(44,26,14,0.08);
+            background: rgba(250,248,244,0.95);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--espresso);
+            text-decoration: none;
+        }
+        .nav-logo span { color: var(--caramel); }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a {
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--dust);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--caramel); }
+
+        /* ─── HERO ─────────────────────────────────────────────────── */
+        .wardrobe-hero {
+            background: linear-gradient(135deg, var(--silk) 0%, var(--cream) 60%);
+            padding: 3rem 3rem 2rem;
+            border-bottom: 1px solid rgba(44,26,14,0.06);
+        }
+        .hero-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 2rem;
+        }
+        .hero-eyebrow {
+            font-size: 0.65rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--caramel);
+            margin-bottom: 0.8rem;
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            line-height: 1.15;
+            margin-bottom: 0.5rem;
+        }
+        h1 em { font-style: italic; color: var(--mocha); }
+        .hero-sub {
+            font-size: 0.85rem;
+            color: #6b5a4e;
+            line-height: 1.7;
+            max-width: 50ch;
+        }
+
+        /* Weather widget */
+        .weather-widget {
+            background: var(--espresso);
+            color: var(--cream);
+            border-radius: 16px;
+            padding: 1.2rem 1.8rem;
+            min-width: 180px;
+            text-align: center;
+        }
+        .weather-temp {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            line-height: 1;
+            color: var(--gold);
+        }
+        .weather-desc {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--dust);
+            margin-top: 0.3rem;
+        }
+        .weather-city {
+            font-size: 0.65rem;
+            color: rgba(184,169,154,0.6);
+            margin-top: 0.2rem;
+        }
+
+        /* ─── MAIN LAYOUT ───────────────────────────────────────────── */
+        .wardrobe-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 3rem;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        /* ─── LEFT PANEL ────────────────────────────────────────────── */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .panel-card {
+            background: var(--warm-white);
+            border: 1px solid rgba(44,26,14,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .panel-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(44,26,14,0.06);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .panel-icon { font-size: 1.1rem; }
+        .panel-title {
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        .panel-body { padding: 1.2rem 1.5rem; }
+
+        /* Upload Zone */
+        .upload-zone {
+            border: 2px dashed rgba(196,132,59,0.3);
+            border-radius: 10px;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: var(--caramel);
+            background: rgba(196,132,59,0.04);
+        }
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .upload-text {
+            font-size: 0.8rem;
+            color: var(--dust);
+            line-height: 1.6;
+        }
+        .upload-text strong { color: var(--caramel); }
+
+        /* Gender selector in upload */
+        .gender-select {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .gender-chip {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid rgba(44,26,14,0.1);
+            border-radius: 8px;
+            background: transparent;
+            font-size: 0.72rem;
+            font-family: 'Jost', sans-serif;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .gender-chip.active {
+            background: var(--espresso);
+            color: var(--cream);
+            border-color: var(--espresso);
+        }
+
+        /* Upload progress */
+        .upload-result {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            background: rgba(196,132,59,0.08);
+            border: 1px solid rgba(196,132,59,0.2);
+            font-size: 0.78rem;
+        }
+        .upload-result.show { display: block; }
+        .upload-result .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 100px;
+            background: var(--caramel);
+            color: white;
+            font-size: 0.65rem;
+            margin: 2px;
+        }
+
+        /* Daily Outfit */
+        .outfit-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+        .outfit-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem;
+            border-radius: 8px;
+            background: rgba(44,26,14,0.03);
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .outfit-item:hover { background: rgba(196,132,59,0.08); }
+        .outfit-img {
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: var(--silk);
+            flex-shrink: 0;
+        }
+        .outfit-info { flex: 1; min-width: 0; }
+        .outfit-cat {
+            font-size: 0.68rem;
+            color: var(--caramel);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .outfit-color {
+            font-size: 0.8rem;
+            color: var(--espresso);
+        }
+        .outfit-actions { display: flex; gap: 4px; }
+        .action-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1px solid rgba(44,26,14,0.1);
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        .action-btn:hover { background: var(--silk); }
+        .action-btn.worn  { background: #e8f5e9; border-color: #81c784; }
+        .action-btn.skip  { background: #fff3e0; border-color: #ffb74d; }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+        .stat-box {
+            padding: 0.8rem;
+            background: rgba(44,26,14,0.03);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--caramel);
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--dust);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.2rem;
+        }
+
+        /* Blind spots */
+        .blind-spot-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .blind-spot-item {
+            padding: 0.6rem 0.8rem;
+            background: rgba(255, 100, 100, 0.06);
+            border: 1px solid rgba(255, 100, 100, 0.15);
+            border-radius: 8px;
+            font-size: 0.78rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .bs-icon { font-size: 1rem; }
+        .bs-label { color: var(--espresso); }
+        .bs-badge {
+            margin-left: auto;
+            font-size: 0.62rem;
+            padding: 2px 6px;
+            background: rgba(255,100,100,0.15);
+            border-radius: 100px;
+            color: #c0392b;
+        }
+
+        /* ─── RIGHT PANEL: WARDROBE GRID ────────────────────────────── */
+        .right-panel {}
+
+        .wardrobe-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .wardrobe-count {
+            font-size: 0.72rem;
+            color: var(--dust);
+            letter-spacing: 0.1em;
+        }
+        .filter-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .filter-chip {
+            padding: 4px 12px;
+            border-radius: 100px;
+            border: 1px solid rgba(44,26,14,0.1);
+            background: transparent;
+            font-size: 0.68rem;
+            font-family: 'Jost', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--dust);
+        }
+        .filter-chip.active {
+            background: var(--espresso);
+            color: var(--cream);
+            border-color: var(--espresso);
+        }
+        .filter-chip:hover:not(.active) { background: var(--silk); color: var(--espresso); }
+
+        /* Wardrobe Grid */
+        .wardrobe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .wardrobe-item {
+            background: var(--warm-white);
+            border: 1px solid rgba(44,26,14,0.06);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .wardrobe-item:hover {
+            border-color: rgba(196,132,59,0.3);
+            box-shadow: 0 8px 24px rgba(44,26,14,0.08);
+            transform: translateY(-2px);
+        }
+
+        .item-img-wrap {
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, #f0ebe3, #e8ddd0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .item-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+        }
+        .item-img-wrap .placeholder-icon {
+            font-size: 3rem;
+            opacity: 0.3;
+        }
+
+        /* Delete button */
+        .item-delete {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+        }
+        .wardrobe-item:hover .item-delete { display: flex; }
+        .item-delete:hover { background: #ff6b6b; color: white; }
+
+        .item-meta {
+            padding: 0.6rem 0.7rem 0.8rem;
+        }
+        .item-category {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--caramel);
+            margin-bottom: 2px;
+        }
+        .item-color {
+            font-size: 0.75rem;
+            color: var(--espresso);
+        }
+        .item-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin-top: 5px;
+        }
+        .item-tag {
+            font-size: 0.58rem;
+            padding: 1px 6px;
+            background: rgba(44,26,14,0.05);
+            border-radius: 100px;
+            color: var(--dust);
+        }
+
+        /* Item actions */
+        .item-actions {
+            display: flex;
+            border-top: 1px solid rgba(44,26,14,0.05);
+        }
+        .ia-btn {
+            flex: 1;
+            padding: 0.45rem;
+            border: none;
+            background: transparent;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: var(--dust);
+        }
+        .ia-btn:hover { background: rgba(44,26,14,0.04); }
+        .ia-btn:not(:last-child) { border-right: 1px solid rgba(44,26,14,0.05); }
+
+        /* Empty state */
+        .wardrobe-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--dust);
+        }
+        .empty-icon { font-size: 4rem; margin-bottom: 1rem; opacity: 0.4; }
+        .empty-text { font-size: 0.9rem; line-height: 1.7; }
+
+        /* Loading skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0ebe3 25%, #e8ddd0 50%, #f0ebe3 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+        @keyframes shimmer {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--espresso);
+            color: var(--cream);
+            padding: 0.8rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            z-index: 9999;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            nav { padding: 1rem 1.5rem; }
+            .wardrobe-hero { padding: 2rem 1.5rem; }
+            .hero-inner { grid-template-columns: 1fr; }
+            .wardrobe-main {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .wardrobe-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <a href="/" class="nav-logo">Deep Style <span>AI</span></a>
+    <div class="nav-links">
+        <a href="/personal_color">Color</a>
+        <a href="/face_shape">Face</a>
+        <a href="/body_shape">Body</a>
+        <a href="/wardrobe" class="active">Wardrobe</a>
+        <a href="/chatbot">AI Chat</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="wardrobe-hero">
+    <div class="hero-inner">
+        <div>
+            <div class="hero-eyebrow">Tủ Quần Áo Thông Minh</div>
+            <h1>Virtual<br><em>Wardrobe</em></h1>
+            <p class="hero-sub">
+                Upload ảnh quần áo — AI tự tách nền, phân loại, và gợi ý outfit phù hợp với thời tiết mỗi sáng.
+            </p>
+        </div>
+        <div class="weather-widget" id="weather-widget">
+            <div class="weather-temp" id="w-temp">–°</div>
+            <div class="weather-desc" id="w-desc">Đang tải...</div>
+            <div class="weather-city" id="w-city"></div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN -->
+<div class="wardrobe-main">
+
+    <!-- LEFT PANEL -->
+    <aside class="left-panel">
+
+        <!-- Upload Card -->
+        <div class="panel-card">
+            <div class="panel-header">
+                <span class="panel-icon">📸</span>
+                <span class="panel-title">Thêm Quần Áo</span>
+            </div>
+            <div class="panel-body">
+                <div class="upload-zone" id="upload-zone">
+                    <input type="file" id="file-input" accept="image/*" multiple>
+                    <div class="upload-icon">👗</div>
+                    <div class="upload-text">
+                        <strong>Kéo thả ảnh vào đây</strong><br>
+                        hoặc click để chọn file<br>
+                        <span style="font-size:0.7rem; color: #c4843b;">JPG, PNG, WebP • Tự động tách nền</span>
+                    </div>
+                </div>
+                <div class="gender-select">
+                    <button class="gender-chip" data-g="female" id="g-female" onclick="selectUploadGender('female')">♀ Nữ</button>
+                    <button class="gender-chip active" data-g="male" id="g-male" onclick="selectUploadGender('male')">♂ Nam</button>
+                </div>
+                <div class="upload-result" id="upload-result">
+                    <div id="upload-result-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Outfit -->
+        <div class="panel-card">
+            <div class="panel-header">
+                <span class="panel-icon">✨</span>
+                <span class="panel-title">Outfit Hôm Nay</span>
+            </div>
+            <div class="panel-body">
+                <div class="outfit-cards" id="daily-outfit-list">
+                    <div style="text-align:center; color: var(--dust); font-size: 0.8rem; padding: 1rem 0;">
+                        Đang phân tích thời tiết...
+                    </div>
+                </div>
+                <button onclick="loadDailyOutfit()" style="
+                    width: 100%;
+                    margin-top: 1rem;
+                    padding: 0.6rem;
+                    border: 1px solid rgba(44,26,14,0.1);
+                    border-radius: 8px;
+                    background: transparent;
+                    font-family: 'Jost', sans-serif;
+                    font-size: 0.72rem;
+                    letter-spacing: 0.1em;
+                    cursor: pointer;
+                    color: var(--caramel);
+                    text-transform: uppercase;
+                    transition: all 0.2s;
+                " onmouseover="this.style.background='rgba(196,132,59,0.08)'" onmouseout="this.style.background='transparent'">
+                    🔄 Gợi ý lại
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="panel-card">
+            <div class="panel-header">
+                <span class="panel-icon">📊</span>
+                <span class="panel-title">Thống Kê Tủ Đồ</span>
+            </div>
+            <div class="panel-body">
+                <div class="stats-grid" id="stats-grid">
+                    <div class="stat-box"><div class="stat-num skeleton" id="s-total" style="height:2rem;border-radius:4px;"></div><div class="stat-label">Tổng món</div></div>
+                    <div class="stat-box"><div class="stat-num skeleton" id="s-worn" style="height:2rem;border-radius:4px;"></div><div class="stat-label">Đã mặc</div></div>
+                    <div class="stat-box"><div class="stat-num skeleton" id="s-cats" style="height:2rem;border-radius:4px;"></div><div class="stat-label">Loại đồ</div></div>
+                    <div class="stat-box"><div class="stat-num skeleton" id="s-blind" style="height:2rem;border-radius:4px;"></div><div class="stat-label">Điểm mù</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blind Spots -->
+        <div class="panel-card" id="blind-spot-card" style="display:none;">
+            <div class="panel-header">
+                <span class="panel-icon">🔍</span>
+                <span class="panel-title">Điểm Mù Sở Thích</span>
+            </div>
+            <div class="panel-body">
+                <p style="font-size:0.75rem; color: var(--dust); margin-bottom:0.8rem; line-height:1.6;">
+                    AI đã phát hiện bạn hay bỏ qua những món đồ này:
+                </p>
+                <div class="blind-spot-list" id="blind-spot-list"></div>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- RIGHT PANEL -->
+    <main class="right-panel">
+        <div class="wardrobe-toolbar">
+            <span class="wardrobe-count" id="item-count">0 món đồ</span>
+            <div class="filter-row" id="filter-row">
+                <button class="filter-chip active" data-cat="" onclick="filterItems(this, '')">Tất cả</button>
+                <button class="filter-chip" data-cat="áo thun" onclick="filterItems(this, 'áo thun')">Áo thun</button>
+                <button class="filter-chip" data-cat="áo sơ mi" onclick="filterItems(this, 'áo sơ mi')">Áo sơ mi</button>
+                <button class="filter-chip" data-cat="quần jean" onclick="filterItems(this, 'quần jean')">Quần</button>
+                <button class="filter-chip" data-cat="váy ngắn" onclick="filterItems(this, 'váy ngắn')">Váy</button>
+                <button class="filter-chip" data-cat="giày sneaker" onclick="filterItems(this, 'giày sneaker')">Giày</button>
+            </div>
+        </div>
+
+        <div class="wardrobe-grid" id="wardrobe-grid">
+            <div class="wardrobe-empty">
+                <div class="empty-icon">🪣</div>
+                <div class="empty-text">
+                    Tủ đồ của bạn đang trống!<br>
+                    Hãy upload ảnh quần áo để bắt đầu.
+                </div>
+            </div>
+        </div>
+    </main>
+
+</div>
+
+
+<!-- Edit Item Modal -->
+<div id="edit-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:var(--warm-white); padding:2rem; border-radius:12px; width:400px; max-width:90%;">
+        <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; margin-bottom:1rem; color:var(--espresso);">Sửa Thông Tin</h3>
+        <input type="hidden" id="edit-item-id">
+        <div style="margin-bottom:1rem;">
+            <label style="display:block; font-size:0.8rem; margin-bottom:0.3rem;">Tên món đồ (Name)</label>
+            <input type="text" id="edit-item-name" style="width:100%; padding:0.5rem; border:1px solid rgba(0,0,0,0.1); border-radius:4px;">
+        </div>
+        <div style="margin-bottom:1rem;">
+            <label style="display:block; font-size:0.8rem; margin-bottom:0.3rem;">Ghi chú (Note)</label>
+            <textarea id="edit-item-note" style="width:100%; padding:0.5rem; border:1px solid rgba(0,0,0,0.1); border-radius:4px; height:80px;"></textarea>
+        </div>
+        <div style="margin-bottom:1.5rem;">
+            <label style="display:block; font-size:0.8rem; margin-bottom:0.3rem;">Danh mục</label>
+            <input type="text" id="edit-item-category" style="width:100%; padding:0.5rem; border:1px solid rgba(0,0,0,0.1); border-radius:4px;">
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:1rem;">
+            <button onclick="closeEditModal()" style="padding:0.5rem 1rem; border:none; background:transparent; cursor:pointer;">Hủy</button>
+            <button onclick="saveEditItem()" style="padding:0.5rem 1rem; border:none; background:var(--caramel); color:white; border-radius:4px; cursor:pointer;">Lưu</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script src="/static/js/emotional_signature.js" defer></script>
+<script src="/static/js/gender_switch.js" defer></script>
+<script>
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let allItems  = [];
+let uploadGender = localStorage.getItem('fm_gender') || 'female';
+let currentFilter = '';
+
+
+// ─── EDIT MODAL ────────────────────────────────────────────────────────────
+function openEditModal(id) {
+    const item = allItems.find(i => i.id === id);
+    if(!item) return;
+    document.getElementById('edit-item-id').value = id;
+    document.getElementById('edit-item-name').value = item.name || '';
+    document.getElementById('edit-item-note').value = item.note || '';
+    document.getElementById('edit-item-category').value = item.category || '';
+    document.getElementById('edit-modal').style.display = 'flex';
+}
+function closeEditModal() {
+    document.getElementById('edit-modal').style.display = 'none';
+}
+async function saveEditItem() {
+    const id = document.getElementById('edit-item-id').value;
+    const data = {
+        name: document.getElementById('edit-item-name').value,
+        note: document.getElementById('edit-item-note').value,
+        category: document.getElementById('edit-item-category').value
+    };
+    try {
+        const r = await fetch(`/api/wardrobe/items/${id}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        if(r.ok) {
+            showToast('✓ Đã cập nhật');
+            closeEditModal();
+            loadItems(currentFilter);
+        } else {
+            showToast('✗ Lỗi cập nhật');
+        }
+    } catch(e) { console.error(e); }
+}
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    // Set initial upload gender button
+    document.querySelectorAll('.gender-chip').forEach(b => {
+        b.classList.toggle('active', b.dataset.g === uploadGender);
+    });
+    loadWeather();
+    loadItems();
+    loadDailyOutfit();
+    loadStats();
+    setupDragDrop();
+    setupFileInput();
+});
+
+// ─── UPLOAD GENDER ─────────────────────────────────────────────────────────
+function selectUploadGender(g) {
+    uploadGender = g;
+    document.querySelectorAll('.gender-chip').forEach(b => {
+        b.classList.toggle('active', b.dataset.g === g);
+    });
+}
+
+// ─── WEATHER ───────────────────────────────────────────────────────────────
+async function loadWeather(lat = null, lon = null) {
+    try {
+        let url = '/api/weather';
+        if (lat && lon) {
+            url += `?lat=${lat}&lon=${lon}`;
+        }
+        const r = await fetch(url);
+        const d = await r.json();
+        document.getElementById('w-temp').textContent  = `${d.temp}°C`;
+        document.getElementById('w-desc').textContent  = d.description || '–';
+        document.getElementById('w-city').textContent  = d.city || '';
+    } catch(e) {
+        document.getElementById('w-temp').textContent = '28°C';
+        document.getElementById('w-desc').textContent = 'Hà Nội';
+    }
+}
+
+// ─── LOAD ITEMS ────────────────────────────────────────────────────────────
+async function loadItems(cat = '') {
+    try {
+        const gender = localStorage.getItem('fm_gender') || 'female';
+        const url = `/api/wardrobe/items?gender=${gender}${cat ? `&category=${encodeURIComponent(cat)}` : ''}`;
+        const r = await fetch(url);
+        const d = await r.json();
+        allItems = d.items || [];
+        renderGrid(allItems);
+        document.getElementById('item-count').textContent = `${allItems.length} món đồ`;
+    } catch(e) {
+        console.error(e);
+    }
+}
+
+// ─── FILTER ────────────────────────────────────────────────────────────────
+function filterItems(btn, cat) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filtered = cat ? allItems.filter(i => i.category === cat) : allItems;
+    renderGrid(filtered);
+}
+
+// ─── RENDER GRID ───────────────────────────────────────────────────────────
+function renderGrid(items) {
+    const grid = document.getElementById('wardrobe-grid');
+    if (!items.length) {
+        grid.innerHTML = `<div class="wardrobe-empty">
+            <div class="empty-icon">👗</div>
+            <div class="empty-text">Chưa có món đồ nào.<br>Hãy upload ảnh từ panel bên trái!</div>
+        </div>`;
+        return;
+    }
+    grid.innerHTML = items.map(item => `
+        <div class="wardrobe-item" id="item-${item.id}">
+            <div class="item-img-wrap">
+                ${item.image_url
+                    ? `<img src="${item.image_url}" alt="${item.category}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                       <span class="placeholder-icon" style="display:none;">👗</span>`
+                    : `<span class="placeholder-icon">👗</span>`}
+                <button class="item-delete" onclick="deleteItem(${item.id}, event)" title="Xóa">✕</button>
+            </div>
+            <div class="item-meta">
+                <div class="item-category">${item.category || 'Chưa phân loại'}</div>
+                <div class="item-color">${item.color || ''}</div>
+                ${(item.tags && item.tags.length) ? `<div class="item-tags">${item.tags.slice(0,3).map(t=>`<span class="item-tag">${t}</span>`).join('')}</div>` : ''}
+            </div>
+            <div class="item-actions">
+                <button class="ia-btn" onclick="sendFeedback(${item.id}, 'liked')" title="Thích">❤️</button>
+                <button class="ia-btn" onclick="sendFeedback(${item.id}, 'worn')" title="Đã mặc hôm nay">✓</button>
+                <button class="ia-btn" onclick="openEditModal(${item.id})" title="Sửa thông tin">✏️</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ─── DELETE ────────────────────────────────────────────────────────────────
+async function deleteItem(id, e) {
+    e.stopPropagation();
+    if (!confirm('Xóa món đồ này khỏi tủ?')) return;
+    try {
+        await fetch(`/api/wardrobe/delete/${id}`, { method: 'DELETE' });
+        const el = document.getElementById(`item-${id}`);
+        if (el) { el.style.opacity = '0'; el.style.transform = 'scale(0.8)'; el.style.transition = 'all 0.3s'; setTimeout(() => el.remove(), 300); }
+        allItems = allItems.filter(i => i.id !== id);
+        document.getElementById('item-count').textContent = `${allItems.length} món đồ`;
+        showToast('✓ Đã xóa khỏi tủ đồ');
+        loadStats();
+    } catch(e) { console.error(e); }
+}
+
+// ─── FEEDBACK ──────────────────────────────────────────────────────────────
+async function sendFeedback(itemId, action) {
+    const labels = { liked: '❤️ Đã thích', worn: '✓ Đã ghi nhận mặc hôm nay', skipped: '↷ Đã bỏ qua' };
+    try {
+        await fetch('/api/preference/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ item_id: itemId, action }),
+        });
+        showToast(labels[action] || '✓ Đã ghi nhận');
+    } catch(e) {}
+}
+
+// ─── DAILY OUTFIT (GPS + Layers) ─────────────────────────────────────────
+async function loadDailyOutfit() {
+    const list = document.getElementById('daily-outfit-list');
+    list.innerHTML = '<div style="text-align:center;color:var(--dust);font-size:0.8rem;padding:1rem 0;">✨ Đang phân tích... (đang lấy GPS)</div>';
+    
+    let lat = null, lon = null;
+    try {
+        // Lấy GPS để phân tích thời tiết thật
+        const pos = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {timeout: 5000});
+        });
+        lat = pos.coords.latitude;
+        lon = pos.coords.longitude;
+        // Cập nhật lại widget thời tiết
+        loadWeather(lat, lon);
+    } catch(e) {
+        console.warn('GPS failed or denied, fallback to city mode.');
+    }
+
+    list.innerHTML = '<div style="text-align:center;color:var(--dust);font-size:0.8rem;padding:1rem 0;">✨ Đang phân tích phục trang...</div>';
+
+    try {
+        const gender = localStorage.getItem('fm_gender') || 'female';
+        let url = `/api/wardrobe/daily-outfit?gender=${gender}`;
+        if (lat && lon) {
+            url += `&lat=${lat}&lon=${lon}`;
+        }
+        
+        const r = await fetch(url);
+        const d = await r.json();
+
+        if (!d.outfit || !d.outfit.length) {
+            list.innerHTML = `<div style="text-align:center;color:var(--dust);font-size:0.8rem;padding:1rem 0;line-height:1.6;">${d.message || 'Chưa có outfit phù hợp.'}</div>`;
+            return;
+        }
+
+        // Render Layers instead of flat items
+        const layersHtml = (d.layers || []).map(l => {
+            const item = l.item;
+            return `
+                <div class="outfit-item">
+                    <div style="font-size:0.6rem; color:var(--dust); text-transform:uppercase; margin-right:10px; width:40px; text-align:center;">Lớp ${l.layer}</div>
+                    ${item.image_url
+                        ? `<img class="outfit-img" src="${item.image_url}" alt="${item.category}" onerror="this.src=''">`
+                        : `<div class="outfit-img" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">👗</div>`}
+                    <div class="outfit-info" style="flex:1;">
+                        <div class="outfit-cat">${item.name || item.category}</div>
+                        <div class="outfit-color" style="font-size:0.7rem;">${l.label} • ${item.color || ''}</div>
+                    </div>
+                    <div class="outfit-actions">
+                        <button class="action-btn worn" onclick="sendFeedback(${item.id},'worn')" title="Mặc món này">✓</button>
+                        <button class="action-btn skip" onclick="sendFeedback(${item.id},'skipped')" title="Bỏ qua">↷</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        list.innerHTML = `
+            <div style="font-size:0.72rem;color:var(--caramel);margin-bottom:0.6rem;letter-spacing:0.05em;line-height:1.4;">
+                ${d.message}
+                ${d.ai_tips ? `<br><span style="color:var(--espresso);font-weight:400;">${d.ai_tips}</span>` : ''}
+            </div>
+            ${layersHtml}
+            <button onclick="saveOutfitSet([${d.outfit.map(i=>i.id).join(',')}])" style="width:100%;margin-top:0.5rem;padding:0.5rem;background:var(--espresso);color:var(--cream);border:none;border-radius:6px;cursor:pointer;">Lưu thành Bộ</button>
+        `;
+    } catch(e) {
+        list.innerHTML = '<div style="text-align:center;color:var(--dust);font-size:0.78rem;padding:1rem 0;">Lỗi tải outfit.</div>';
+    }
+}
+
+async function saveOutfitSet(ids) {
+    // Note: To be fully implemented in backend, simple mock alert for now
+    alert('Đã lưu outfit (Giao diện Outfit Sets sẽ được thêm trong bảng điều khiển sắp tới).');
+}
+
+// ─── STATS ─────────────────────────────────────────────────────────────────
+async function loadStats() {
+    try {
+        const r = await fetch('/api/wardrobe/stats');
+        const d = await r.json();
+
+        // Animate numbers
+        animateNum('s-total', d.total_items || 0);
+        animateNum('s-worn',  (d.most_worn || []).reduce((a,i) => a + (i.wear_count||0), 0));
+        animateNum('s-cats',  (d.by_category || []).length);
+        animateNum('s-blind', d.blind_spot_count || 0);
+
+        // Blind spots
+        const spots = d.blind_spots || [];
+        const bsCard = document.getElementById('blind-spot-card');
+        if (spots.length) {
+            bsCard.style.display = 'block';
+            document.getElementById('blind-spot-list').innerHTML = spots.map(s => `
+                <div class="blind-spot-item">
+                    <span class="bs-icon">⚠️</span>
+                    <span class="bs-label">${s.category || 'Không rõ'} — ${s.color || ''}</span>
+                    <span class="bs-badge">bỏ qua ${s.skip_count}×</span>
+                </div>
+            `).join('');
+        } else {
+            bsCard.style.display = 'none';
+        }
+    } catch(e) {}
+}
+
+function animateNum(id, target) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.className = 'stat-num';
+    let current = 0;
+    const step = Math.max(1, Math.ceil(target / 20));
+    const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current;
+        if (current >= target) clearInterval(timer);
+    }, 40);
+}
+
+// ─── UPLOAD ────────────────────────────────────────────────────────────────
+function setupFileInput() {
+    document.getElementById('file-input').addEventListener('change', e => {
+        const files = Array.from(e.target.files);
+        if (files.length) uploadFiles(files);
+    });
+}
+
+function setupDragDrop() {
+    const zone = document.getElementById('upload-zone');
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('dragover');
+        const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+        if (files.length) uploadFiles(files);
+    });
+}
+
+async function uploadFiles(files) {
+    const resultDiv = document.getElementById('upload-result');
+    const resultContent = document.getElementById('upload-result-content');
+    resultDiv.classList.add('show');
+    resultContent.innerHTML = `<span style="color:var(--caramel);">⏳ Đang tách nền và phân loại ${files.length} món đồ...</span>`;
+
+    let successCount = 0;
+    const results = [];
+
+    for (const file of files) {
+        try {
+            const fd = new FormData();
+            fd.append('file', file);
+            fd.append('gender', uploadGender);
+
+            const r = await fetch('/api/wardrobe/upload', { method: 'POST', body: fd });
+            const d = await r.json();
+
+            if (d.ok) {
+                successCount++;
+                results.push(d);
+            }
+        } catch(e) {
+            console.error('Upload error:', e);
+        }
+    }
+
+    if (successCount > 0) {
+        resultContent.innerHTML = `
+            <div style="color:#2e7d32;font-weight:500;margin-bottom:0.5rem;">✓ Đã thêm ${successCount} món vào tủ!</div>
+            ${results.slice(0,3).map(d => `
+                <div style="margin-bottom:0.3rem;">
+                    ${d.category ? `<span class="tag">${d.category}</span>` : ''}
+                    ${d.color ? `<span class="tag" style="background:var(--espresso)">${d.color}</span>` : ''}
+                    ${d.bg_removed ? `<span class="tag" style="background:#4caf50">✓ tách nền</span>` : ''}
+                </div>
+            `).join('')}
+        `;
+        showToast(`✓ Đã thêm ${successCount} món vào tủ đồ!`);
+        loadItems(currentFilter);
+        loadStats();
+        setTimeout(() => loadDailyOutfit(), 1000);
+    } else {
+        resultContent.innerHTML = '<span style="color:#c62828;">✗ Tải lên thất bại, thử lại.</span>';
+    }
+}
+
+// ─── TOAST ─────────────────────────────────────────────────────────────────
+function showToast(msg, duration = 2500) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), duration);
+}
+
+// ─── GENDER CHANGE EVENT ───────────────────────────────────────────────────
+window.addEventListener('genderchange', e => {
+    loadItems(currentFilter);
+    loadDailyOutfit();
+});
+</script>
+</body>
+</html>

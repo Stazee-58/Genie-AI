@@ -1,0 +1,105 @@
+/* Đặt phông nền chung và màu chữ */
+body {
+    background-image: url('../image/back.png'); /* Thay 'path-to-your-image.jpg' bằng đường dẫn thực tế của hình ảnh bạn muốn sử dụng */
+    background-size: cover; /* Điều chỉnh kích thước hình nền để phủ kín toàn bộ phần nền */
+    /* background-position: center;  */
+    background-repeat: no-repeat; /* Không lặp lại hình nền */
+    font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+    text-align: center;
+}
+
+/* Định dạng tiêu đề chính */
+h1 {
+    color: #333;
+    font-size: 3rem;
+    margin-top: 2rem;
+}
+
+.container {
+    position: relative;
+    top: 275px;
+}
+
+/* Định dạng các nút bấm */
+button {
+    background-color: #4d2715d0; /* Màu xanh nước biển */
+    border: none;
+    border-radius: 5px;
+    color: rgb(203, 194, 185);
+    cursor: pointer;
+    font-size: 1.25rem;
+    margin: 1rem;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+/* Hiệu ứng khi di chuột qua nút */
+button:hover {
+    background-color: #371d10; /* Màu xanh đậm hơn khi hover */
+}
+
+/* Tùy chỉnh form */
+form {
+    margin: 20px auto;
+}
+
+/* Phong cách cho các liên kết không có text-decoration */
+a, a:visited {
+    color: #3498db;
+    text-decoration: none;
+}
+
+/* Định dạng lại các nút khi được hiển thị trên thiết bị di động */
+@media (max-width: 768px) {
+    button {
+        font-size: 1rem; /* Giảm kích thước chữ cho màn hình nhỏ */
+        padding: 8px 15px; /* Giảm padding cho màn hình nhỏ */
+    }
+
+    h1 {
+        font-size: 2.5rem; /* Giảm kích thước tiêu đề cho màn hình nhỏ */
+    }
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.title {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.container {
+    position: relative;
+    top: 275px;
+    animation: fadeInUp 1s ease-out forwards;
+    opacity: 0; /* Cho animation */
+}
+
+/* Cải thiện hiệu ứng hover cho button */
+button {
+    background-color: #4d2715d0;
+    border: none;
+    border-radius: 5px;
+    color: rgb(203, 194, 185);
+    cursor: pointer;
+    font-size: 1.25rem;
+    margin: 1rem;
+    padding: 10px 20px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: #371d10;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
