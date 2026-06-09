@@ -6,7 +6,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Optional
 
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 from google import genai
 from pydantic import BaseModel, Field
 from PIL import Image
@@ -15,19 +15,31 @@ from PIL import Image
 # =========================
 # Config
 # =========================
-load_dotenv()
+import os
+from dotenv import load_dotenv
 
+# 1. Lấy đường dẫn chính xác của thư mục chứa file gemini_hairstyle.py
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# 2. Ghép với tên file để ra đường dẫn tuyệt đối tới file .env
+env_path = os.path.join(current_dir, '.env')
+
+# 3. Load file .env từ đường dẫn vừa tạo
+load_dotenv(dotenv_path=env_path)
+
+# Lấy Key ra kiểm tra
 API_KEY = os.getenv("GEMINI_API_KEY")
+
 if not API_KEY:
     raise ValueError("Thiếu GEMINI_API_KEY trong file .env")
 
 client = genai.Client(api_key=API_KEY)
 
 # Thư mục gốc chứa ảnh mẫu
-IMAGES_ROOT = Path(r"C:\Users\ADMIN\Downloads\fashionmentor-upgraded\fashionmentor-upgraded\templates\images")
+IMAGES_ROOT = Path(current_dir) / "templates" / "images"
 
 # Thư mục lưu ảnh output của session
-OUTPUT_DIR = Path(r"C:\Users\ADMIN\Downloads\fashionmentor-upgraded\fashionmentor-upgraded\output")
+OUTPUT_DIR = Path(current_dir) / "output"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Model phân loại intent

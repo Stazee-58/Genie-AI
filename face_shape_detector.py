@@ -6,16 +6,21 @@ import torch.nn as nn
 import torchvision
 import torchvision.transforms as T
 from timeit import default_timer
+import os
 
 device = 'cpu'
 classes = ['Heart', 'Oblong', 'Oval', 'Round', 'Square']
 
-def load_face_model(weight_path="./weights/shape_face.pth"):
-    weights = torch.load(weight_path, map_location=torch.device('cpu'))
-    model = torchvision.models.efficientnet_b4()
-    model.classifier = nn.Linear(model.classifier[1].in_features, len(classes))
-    model.load_state_dict(weights)
-    return model
+def load_face_model(weight_path="weights/shape_face.pth"):
+    # 1. Lấy thư mục chứa file face_shape_detector.py hiện tại
+    import os
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # 2. Ghép với tên thư mục weights để ra đường dẫn tuyệt đối (C:\Users\...)
+    absolute_weight_path = os.path.join(current_dir, weight_path)
+    
+    # 3. Load model bằng đường dẫn tuyệt đối vừa tạo
+    weights = torch.load(absolute_weight_path, map_location=torch.device('cpu'))
 
 def get_face_shape(
     model: torch.nn.Module,

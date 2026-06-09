@@ -12,20 +12,32 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --cream: #f5f0e8;
-            --warm-white: #faf8f4;
-            --espresso: #2c1a0e;
-            --mocha: #6b3d2a;
-            --caramel: #c4843b;
-            --gold: #d4aa5f;
-            --dust: #b8a99a;
-            --silk: #ede5d8;
+            --bg-primary:    #0a0a0f;
+            --bg-secondary:  #111118;
+            --glass:         rgba(255, 255, 255, 0.04);
+            --glass-border:  rgba(255, 255, 255, 0.08);
+            --accent-1:      #c8a0ff;
+            --accent-2:      #f0c8a0;
+            --gradient-1:    linear-gradient(135deg, #c8a0ff 0%, #f0c8a0 50%, #a0d4ff 100%);
+            --gradient-2:    linear-gradient(135deg, #c8a0ff 0%, #e8b4f0 100%);
+            --text-primary:  #e8e4f0;
+            --text-secondary:#a098b0;
+            --text-muted:    #5a5470;
+            /* Legacy */
+            --cream:        #0a0a0f;
+            --warm-white:   #111118;
+            --espresso:     #e8e4f0;
+            --mocha:        #c8a0ff;
+            --caramel:      #c8a0ff;
+            --gold:         #f0c8a0;
+            --dust:         #a098b0;
+            --silk:         #1a1a28;
         }
 
         html, body {
             min-height: 100%;
-            background: var(--cream);
-            color: var(--espresso);
+            background: var(--bg-primary);
+            color: var(--text-primary);
             font-family: 'Jost', sans-serif;
             font-weight: 300;
         }
@@ -35,9 +47,10 @@
             align-items: center;
             justify-content: space-between;
             padding: 1.2rem 3rem;
-            border-bottom: 1px solid rgba(44,26,14,0.08);
-            background: rgba(250,248,244,0.95);
-            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(10, 10, 15, 0.6);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -51,7 +64,12 @@
             color: var(--espresso);
             text-decoration: none;
         }
-        .nav-logo span { color: var(--caramel); }
+        .nav-logo span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
         .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-links a {
             font-size: 0.72rem;
@@ -65,9 +83,18 @@
 
         /* ─── HERO ─────────────────────────────────────────────────── */
         .wardrobe-hero {
-            background: linear-gradient(135deg, var(--silk) 0%, var(--cream) 60%);
+            background: linear-gradient(135deg, rgba(20,16,40,0.6) 0%, rgba(10,10,15,0.8) 60%);
             padding: 3rem 3rem 2rem;
-            border-bottom: 1px solid rgba(44,26,14,0.06);
+            border-bottom: 1px solid var(--glass-border);
+            position: relative;
+        }
+        .wardrobe-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: var(--gradient-1);
+            opacity: 0.4;
         }
         .hero-inner {
             max-width: 1200px;
@@ -101,19 +128,26 @@
 
         /* Weather widget */
         .weather-widget {
-            background: var(--espresso);
-            color: var(--cream);
+            background: rgba(200, 160, 255, 0.06);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            color: var(--text-primary);
             border-radius: 16px;
             padding: 1.2rem 1.8rem;
             min-width: 180px;
             text-align: center;
+            border: 1px solid rgba(200, 160, 255, 0.12);
+            box-shadow: 0 8px 32px rgba(200, 160, 255, 0.06);
         }
         .weather-temp {
             font-family: 'Cormorant Garamond', serif;
             font-size: 3rem;
             font-weight: 300;
             line-height: 1;
-            color: var(--gold);
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .weather-desc {
             font-size: 0.72rem;
@@ -147,14 +181,16 @@
         }
 
         .panel-card {
-            background: var(--warm-white);
-            border: 1px solid rgba(44,26,14,0.08);
-            border-radius: 12px;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
             overflow: hidden;
         }
         .panel-header {
             padding: 1rem 1.5rem;
-            border-bottom: 1px solid rgba(44,26,14,0.06);
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             align-items: center;
             gap: 0.7rem;
@@ -170,8 +206,8 @@
 
         /* Upload Zone */
         .upload-zone {
-            border: 2px dashed rgba(196,132,59,0.3);
-            border-radius: 10px;
+            border: 2px dashed rgba(200,160,255,0.2);
+            border-radius: 16px;
             padding: 2rem 1rem;
             text-align: center;
             cursor: pointer;
@@ -179,8 +215,8 @@
             position: relative;
         }
         .upload-zone:hover, .upload-zone.dragover {
-            border-color: var(--caramel);
-            background: rgba(196,132,59,0.04);
+            border-color: var(--accent-1);
+            background: rgba(200,160,255,0.04);
         }
         .upload-zone input[type="file"] {
             position: absolute;
@@ -215,9 +251,10 @@
             transition: all 0.2s;
         }
         .gender-chip.active {
-            background: var(--espresso);
-            color: var(--cream);
-            border-color: var(--espresso);
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            color: var(--bg-primary);
+            border-color: transparent;
+            font-weight: 500;
         }
 
         /* Upload progress */
@@ -225,9 +262,9 @@
             display: none;
             margin-top: 1rem;
             padding: 0.8rem;
-            border-radius: 8px;
-            background: rgba(196,132,59,0.08);
-            border: 1px solid rgba(196,132,59,0.2);
+            border-radius: 12px;
+            background: rgba(200,160,255,0.06);
+            border: 1px solid rgba(200,160,255,0.12);
             font-size: 0.78rem;
         }
         .upload-result.show { display: block; }
@@ -380,11 +417,12 @@
             color: var(--dust);
         }
         .filter-chip.active {
-            background: var(--espresso);
-            color: var(--cream);
-            border-color: var(--espresso);
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            color: var(--bg-primary);
+            border-color: transparent;
+            font-weight: 500;
         }
-        .filter-chip:hover:not(.active) { background: var(--silk); color: var(--espresso); }
+        .filter-chip:hover:not(.active) { background: rgba(200,160,255,0.06); color: var(--accent-1); }
 
         /* Wardrobe Grid */
         .wardrobe-grid {
@@ -394,23 +432,25 @@
         }
 
         .wardrobe-item {
-            background: var(--warm-white);
-            border: 1px solid rgba(44,26,14,0.06);
-            border-radius: 12px;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             cursor: pointer;
             position: relative;
         }
         .wardrobe-item:hover {
-            border-color: rgba(196,132,59,0.3);
-            box-shadow: 0 8px 24px rgba(44,26,14,0.08);
-            transform: translateY(-2px);
+            border-color: rgba(200,160,255,0.2);
+            box-shadow: 0 8px 32px rgba(200,160,255,0.08);
+            transform: translateY(-4px);
         }
 
         .item-img-wrap {
             aspect-ratio: 3/4;
-            background: linear-gradient(135deg, #f0ebe3, #e8ddd0);
+            background: linear-gradient(135deg, rgba(20,16,40,0.5), rgba(15,15,25,0.8));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -507,7 +547,7 @@
 
         /* Loading skeleton */
         .skeleton {
-            background: linear-gradient(90deg, #f0ebe3 25%, #e8ddd0 50%, #f0ebe3 75%);
+            background: linear-gradient(90deg, rgba(200,160,255,0.03) 25%, rgba(200,160,255,0.08) 50%, rgba(200,160,255,0.03) 75%);
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
             border-radius: 8px;
@@ -523,14 +563,16 @@
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%) translateY(80px);
-            background: var(--espresso);
-            color: var(--cream);
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            color: var(--bg-primary);
             padding: 0.8rem 1.5rem;
             border-radius: 100px;
             font-size: 0.8rem;
+            font-weight: 500;
             z-index: 9999;
             transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
             white-space: nowrap;
+            box-shadow: 0 8px 24px rgba(200,160,255,0.2);
         }
         #toast.show { transform: translateX(-50%) translateY(0); }
 
@@ -681,7 +723,14 @@
 
     <!-- RIGHT PANEL -->
     <main class="right-panel">
-        <div class="wardrobe-toolbar">
+        <div class="wardrobe-toolbar" style="margin-bottom: 1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+            <div style="display:flex; gap: 0.8rem;">
+                <button class="filter-chip active" id="view-grid-btn" onclick="toggleView('grid')">Lưới Tủ Đồ</button>
+                <button class="filter-chip" id="view-history-btn" onclick="toggleView('history')">Lịch Sử Upload</button>
+            </div>
+        </div>
+        
+        <div class="wardrobe-toolbar" id="grid-toolbar">
             <span class="wardrobe-count" id="item-count">0 món đồ</span>
             <div class="filter-row" id="filter-row">
                 <button class="filter-chip active" data-cat="" onclick="filterItems(this, '')">Tất cả</button>
@@ -701,6 +750,10 @@
                     Hãy upload ảnh quần áo để bắt đầu.
                 </div>
             </div>
+        </div>
+        
+        <div id="wardrobe-history" style="display:none;">
+            <!-- Render history list here -->
         </div>
     </main>
 
@@ -828,6 +881,7 @@ async function loadItems(cat = '') {
         const d = await r.json();
         allItems = d.items || [];
         renderGrid(allItems);
+        if(currentView === 'history') renderHistory(allItems);
         document.getElementById('item-count').textContent = `${allItems.length} món đồ`;
     } catch(e) {
         console.error(e);
@@ -876,6 +930,58 @@ function renderGrid(items) {
     `).join('');
 }
 
+// ─── RENDER HISTORY ────────────────────────────────────────────────────────
+function renderHistory(items) {
+    const list = document.getElementById('wardrobe-history');
+    if (!items.length) {
+        list.innerHTML = `<div class="wardrobe-empty">
+            <div class="empty-text">Chưa có lịch sử upload nào.</div>
+        </div>`;
+        return;
+    }
+    list.innerHTML = items.map(item => `
+        <div class="panel-card" style="margin-bottom:1rem; padding:1rem; display:flex; gap:1rem; align-items:center;">
+            <div style="flex:0 0 80px; text-align:center;">
+                <div style="font-size:0.6rem; color:var(--dust); margin-bottom:5px;">Ảnh Gốc</div>
+                ${item.original_image_url
+                    ? `<img src="${item.original_image_url}" style="width:80px; height:80px; object-fit:cover; border-radius:8px; border:1px solid rgba(255,255,255,0.1);">`
+                    : `<div style="width:80px; height:80px; border-radius:8px; background:var(--silk); display:flex; align-items:center; justify-content:center; color:var(--dust); font-size:0.7rem;">Không có</div>`}
+            </div>
+            <div style="flex:0 0 80px; text-align:center;">
+                <div style="font-size:0.6rem; color:var(--dust); margin-bottom:5px;">Tách Nền</div>
+                ${item.image_url
+                    ? `<img src="${item.image_url}" style="width:80px; height:80px; object-fit:cover; border-radius:8px; border:1px solid rgba(255,255,255,0.1);">`
+                    : `<div style="width:80px; height:80px; border-radius:8px; background:var(--silk);"></div>`}
+            </div>
+            <div style="flex:1;">
+                <div style="font-size:0.9rem; color:var(--caramel); margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:0.1em;">${item.category || 'Chưa phân loại'}</div>
+                <div style="font-size:0.75rem; color:var(--espresso); margin-bottom:0.3rem;">Màu: ${item.color || ''}</div>
+                <div style="font-size:0.7rem; color:var(--dust);">Đã tải lên: ${item.created_at || ''}</div>
+            </div>
+            <div>
+                <button class="ia-btn" onclick="deleteItem(${item.id}, event)" title="Xóa món này" style="color:#ff6b6b; border:1px solid rgba(255,107,107,0.3); border-radius:6px; padding:0.4rem 0.8rem;">Xóa</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ─── TOGGLE VIEW ───────────────────────────────────────────────────────────
+let currentView = 'grid';
+function toggleView(view) {
+    currentView = view;
+    document.getElementById('view-grid-btn').classList.toggle('active', view === 'grid');
+    document.getElementById('view-history-btn').classList.toggle('active', view === 'history');
+    
+    document.getElementById('grid-toolbar').style.display = view === 'grid' ? 'flex' : 'none';
+    document.getElementById('wardrobe-grid').style.display = view === 'grid' ? 'grid' : 'none';
+    document.getElementById('wardrobe-history').style.display = view === 'history' ? 'block' : 'none';
+    
+    if (view === 'history') {
+        renderHistory(allItems); // History doesn't apply category filter usually, but uses allItems sorted by created_at DESC
+    }
+}
+
+
 // ─── DELETE ────────────────────────────────────────────────────────────────
 async function deleteItem(id, e) {
     e.stopPropagation();
@@ -886,6 +992,7 @@ async function deleteItem(id, e) {
         if (el) { el.style.opacity = '0'; el.style.transform = 'scale(0.8)'; el.style.transition = 'all 0.3s'; setTimeout(() => el.remove(), 300); }
         allItems = allItems.filter(i => i.id !== id);
         document.getElementById('item-count').textContent = `${allItems.length} món đồ`;
+        if (currentView === 'history') renderHistory(allItems);
         showToast('✓ Đã xóa khỏi tủ đồ');
         loadStats();
     } catch(e) { console.error(e); }

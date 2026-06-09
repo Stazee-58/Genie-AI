@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Cá Nhân — Deep Style AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/themes.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg-primary:    #0a0a0f;
+            --bg-secondary:  #111118;
+            --glass:         rgba(255, 255, 255, 0.04);
+            --glass-border:  rgba(255, 255, 255, 0.08);
+            --accent-1:      #c8a0ff;
+            --accent-2:      #f0c8a0;
+            --gradient-1:    linear-gradient(135deg, #c8a0ff 0%, #f0c8a0 50%, #a0d4ff 100%);
+            --text-primary:  #e8e4f0;
+            --text-secondary:#a098b0;
+            --text-muted:    #5a5470;
+        }
+        html, body {
+            height: 100%;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 70% 25%, rgba(240,200,160,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 60% at 25% 75%, rgba(200,160,255,0.07) 0%, transparent 50%);
+            animation: authMesh 15s ease-in-out infinite alternate;
+            pointer-events: none; z-index: 0;
+        }
+        @keyframes authMesh {
+            0%   { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.08) rotate(1deg); }
+        }
+
+        .wrapper {
+            display: flex; flex-direction: column;
+            min-height: 100vh;
+            position: relative; z-index: 1;
+        }
+        nav {
+            padding: 2rem 4rem;
+            display: flex; justify-content: space-between;
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem; font-weight: 600;
+            letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--text-primary); text-decoration: none;
+        }
+        .nav-logo span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .nav-back {
+            font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--text-secondary); text-decoration: none;
+        }
+        .auth-container {
+            flex: 1;
+            display: flex; align-items: center; justify-content: center;
+            padding: 2rem;
+        }
+        .auth-card {
+            background: var(--glass);
+            backdrop-filter: blur(24px) saturate(1.5);
+            -webkit-backdrop-filter: blur(24px) saturate(1.5);
+            padding: 3rem;
+            border-radius: 24px;
+            width: 100%; max-width: 480px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+            animation: cardFloat 0.8s ease-out both;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(200, 160, 255, 0.05);
+        }
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: var(--gradient-1);
+            opacity: 0.6;
+        }
+        @keyframes cardFloat {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem; font-weight: 300;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+        .form-group { margin-bottom: 1.5rem; text-align: left; }
+        label {
+            display: block;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid rgba(200, 160, 255, 0.12);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            font-family: 'Jost', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-1);
+            box-shadow: 0 0 16px rgba(200, 160, 255, 0.1);
+        }
+        select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        /* Date picker color fix for dark mode */
+        ::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            opacity: 0.6;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 12px;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 4px 20px rgba(200, 160, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(200, 160, 255, 0.3);
+        }
+        .success-msg {
+            color: #a0d4ff;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            background: rgba(160, 212, 255, 0.08);
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(160, 212, 255, 0.15);
+        }
+        
+        @media (max-width: 768px) {
+            nav { padding: 1.5rem; }
+            .auth-card { padding: 2rem 1.5rem; margin: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <nav>
+            <a href="/" class="nav-logo">Deep Style <span>AI</span></a>
+            <a href="/" class="nav-back">Về trang chủ</a>
+        </nav>
+        <div class="auth-container">
+            <div class="auth-card">
+                <h1>Hồ Sơ Của Tôi</h1>
+                <p class="subtitle">Quản lý thông tin cá nhân của @{{ profile.get('username') }}</p>
+                
+                {% if success %}
+                <div class="success-msg">Lưu thông tin thành công!</div>
+                {% endif %}
+                
+                <form action="/profile" method="POST">
+                    <div class="form-group">
+                        <label for="full_name">Tên hiển thị</label>
+                        <input type="text" id="full_name" name="full_name" value="{{ profile.get('full_name') or '' }}" placeholder="Nhập tên của bạn">
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem;">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="dob">Ngày sinh</label>
+                            <input type="date" id="dob" name="dob" value="{{ profile.get('dob') or '' }}">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="gender">Giới tính</label>
+                            <select id="gender" name="gender">
+                                <option value="" {% if not profile.get('gender') %}selected{% endif %}>Chưa chọn</option>
+                                <option value="Nam" {% if profile.get('gender') == 'Nam' %}selected{% endif %}>Nam</option>
+                                <option value="Nữ" {% if profile.get('gender') == 'Nữ' %}selected{% endif %}>Nữ</option>
+                                <option value="Khác" {% if profile.get('gender') == 'Khác' %}selected{% endif %}>Khác</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit">Lưu Thay Đổi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

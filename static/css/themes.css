@@ -1,17 +1,17 @@
 /*
- * FashionMentor — Adaptive UI Themes
+ * FashionMentor — Adaptive UI Themes (Premium Dark Luxury)
  * ====================================
- * 3 themes driven by Emotional Signature:
+ * 4 themes driven by Emotional Signature:
  *   [data-theme="liquid_glass"] — calm, serene, translucent
  *   [data-theme="cyberpunk"]    — energetic, electric, neon
  *   [data-theme="midnight"]     — mysterious, deep purple
- *   [data-theme="warm_glow"]    — confident, golden (default)
+ *   [data-theme="warm_glow"]    — confident, golden (default → now dark luxury)
  *
  * Applied dynamically to <html> element via emotional_signature.js
  */
 
 /* ═══════════════════════════════════════════════════
-   BASE TRANSITIONS — prevent harsh theme jumps
+   BASE TRANSITIONS — smooth theme jumps
 ═══════════════════════════════════════════════════ */
 *, *::before, *::after {
     transition:
@@ -24,20 +24,19 @@
 
 /* ═══════════════════════════════════════════════════
    THEME: LIQUID GLASS (Calm / 🌊)
-   Soft blues, translucent panels, gentle blur
 ═══════════════════════════════════════════════════ */
 [data-theme="liquid_glass"] {
-    --theme-bg:          #e8f4f8;
-    --theme-surface:     rgba(255, 255, 255, 0.45);
-    --theme-surface2:    rgba(200, 235, 248, 0.5);
-    --theme-border:      rgba(126, 200, 227, 0.35);
+    --theme-bg:          #0a1520;
+    --theme-surface:     rgba(126, 200, 227, 0.06);
+    --theme-surface2:    rgba(184, 224, 210, 0.06);
+    --theme-border:      rgba(126, 200, 227, 0.15);
     --theme-accent:      #7EC8E3;
     --theme-accent2:     #B8E0D2;
-    --theme-text:        #1a3a4a;
-    --theme-text-muted:  #4a7a8a;
-    --theme-glow:        0 0 30px rgba(126, 200, 227, 0.3),
-                         0 8px 32px rgba(126, 200, 227, 0.15);
-    --theme-gradient:    linear-gradient(135deg, #e8f4f8 0%, #d0eaf5 50%, #b8e0d2 100%);
+    --theme-text:        #c5e5f0;
+    --theme-text-muted:  #5a8a9a;
+    --theme-glow:        0 0 30px rgba(126, 200, 227, 0.15),
+                         0 8px 32px rgba(126, 200, 227, 0.08);
+    --theme-gradient:    linear-gradient(135deg, #0a1520 0%, #0d1f2e 50%, #0a1a20 100%);
     --theme-name:        'Liquid Glass';
 }
 
@@ -46,7 +45,6 @@
     color: var(--theme-text);
 }
 
-/* Glassmorphism panels */
 [data-theme="liquid_glass"] .card,
 [data-theme="liquid_glass"] .feature-item,
 [data-theme="liquid_glass"] .panel,
@@ -58,22 +56,20 @@
     box-shadow: var(--theme-glow) !important;
 }
 
-/* Accent elements */
 [data-theme="liquid_glass"] .feature-num,
 [data-theme="liquid_glass"] .accent,
 [data-theme="liquid_glass"] h1 em {
     color: var(--theme-accent) !important;
+    -webkit-text-fill-color: var(--theme-accent) !important;
 }
 
-/* Ripple animation */
 [data-theme="liquid_glass"] body::after {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     pointer-events: none;
     background:
-        radial-gradient(ellipse 600px 400px at 20% 30%, rgba(126,200,227,0.08) 0%, transparent 70%),
-        radial-gradient(ellipse 400px 600px at 80% 70%, rgba(184,224,210,0.08) 0%, transparent 70%);
+        radial-gradient(ellipse 600px 400px at 20% 30%, rgba(126,200,227,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 400px 600px at 80% 70%, rgba(184,224,210,0.05) 0%, transparent 70%);
     animation: liquidFlow 12s ease-in-out infinite alternate;
     z-index: 0;
 }
@@ -86,19 +82,18 @@
 
 /* ═══════════════════════════════════════════════════
    THEME: CYBERPUNK (Energetic / ⚡)
-   Dark background, neon pink & cyan, glitch effects
 ═══════════════════════════════════════════════════ */
 [data-theme="cyberpunk"] {
     --theme-bg:          #080c14;
     --theme-surface:     rgba(12, 20, 35, 0.9);
     --theme-surface2:    rgba(255, 0, 110, 0.08);
-    --theme-border:      rgba(255, 0, 110, 0.4);
+    --theme-border:      rgba(255, 0, 110, 0.25);
     --theme-accent:      #FF006E;
     --theme-accent2:     #00F5FF;
     --theme-text:        #e0e8f0;
-    --theme-text-muted:  #7a9ab5;
-    --theme-glow:        0 0 20px rgba(255, 0, 110, 0.4),
-                         0 0 60px rgba(0, 245, 255, 0.1);
+    --theme-text-muted:  #4a6a85;
+    --theme-glow:        0 0 20px rgba(255, 0, 110, 0.2),
+                         0 0 60px rgba(0, 245, 255, 0.05);
     --theme-gradient:    linear-gradient(135deg, #080c14 0%, #0d1a2e 50%, #0a0d1a 100%);
     --theme-name:        'Cyberpunk';
 }
@@ -120,44 +115,40 @@
 [data-theme="cyberpunk"] .feature-num,
 [data-theme="cyberpunk"] .accent {
     color: var(--theme-accent) !important;
+    -webkit-text-fill-color: var(--theme-accent) !important;
     text-shadow: 0 0 10px var(--theme-accent);
 }
 
 [data-theme="cyberpunk"] h1 em {
     color: var(--theme-accent2) !important;
+    -webkit-text-fill-color: var(--theme-accent2) !important;
     text-shadow: 0 0 15px var(--theme-accent2);
 }
 
-/* Scanline effect */
 [data-theme="cyberpunk"] body::after {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     pointer-events: none;
     background: repeating-linear-gradient(
         0deg,
-        transparent 0px,
-        transparent 2px,
-        rgba(0, 245, 255, 0.015) 2px,
-        rgba(0, 245, 255, 0.015) 4px
+        transparent 0px, transparent 2px,
+        rgba(0, 245, 255, 0.015) 2px, rgba(0, 245, 255, 0.015) 4px
     );
     z-index: 1000;
 }
 
-/* Neon border pulse */
 [data-theme="cyberpunk"] .feature-item:hover {
     border-color: var(--theme-accent2) !important;
-    box-shadow: 0 0 30px rgba(0, 245, 255, 0.3) !important;
+    box-shadow: 0 0 30px rgba(0, 245, 255, 0.15) !important;
     animation: neonPulse 0.5s ease;
 }
 
 @keyframes neonPulse {
-    0%  { box-shadow: 0 0 5px rgba(255,0,110,0.5); }
-    50% { box-shadow: 0 0 30px rgba(0,245,255,0.8), 0 0 60px rgba(255,0,110,0.4); }
-    100%{ box-shadow: 0 0 30px rgba(0,245,255,0.3); }
+    0%  { box-shadow: 0 0 5px rgba(255,0,110,0.3); }
+    50% { box-shadow: 0 0 30px rgba(0,245,255,0.4), 0 0 60px rgba(255,0,110,0.2); }
+    100%{ box-shadow: 0 0 30px rgba(0,245,255,0.15); }
 }
 
-/* Glitch animation for headings */
 [data-theme="cyberpunk"] h1 {
     animation: glitch 8s infinite;
 }
@@ -182,19 +173,18 @@
 
 /* ═══════════════════════════════════════════════════
    THEME: MIDNIGHT (Mysterious / 🌙)
-   Deep purples, cosmic feel, gentle aurora
 ═══════════════════════════════════════════════════ */
 [data-theme="midnight"] {
     --theme-bg:          #0d0a1e;
-    --theme-surface:     rgba(20, 12, 45, 0.85);
-    --theme-surface2:    rgba(157, 78, 221, 0.08);
-    --theme-border:      rgba(157, 78, 221, 0.3);
+    --theme-surface:     rgba(20, 12, 45, 0.8);
+    --theme-surface2:    rgba(157, 78, 221, 0.06);
+    --theme-border:      rgba(157, 78, 221, 0.2);
     --theme-accent:      #9D4EDD;
     --theme-accent2:     #C77DFF;
     --theme-text:        #d4c5f0;
-    --theme-text-muted:  #7a6aa0;
-    --theme-glow:        0 0 25px rgba(157, 78, 221, 0.35),
-                         0 8px 40px rgba(157, 78, 221, 0.1);
+    --theme-text-muted:  #5a4a80;
+    --theme-glow:        0 0 25px rgba(157, 78, 221, 0.15),
+                         0 8px 40px rgba(157, 78, 221, 0.05);
     --theme-gradient:    linear-gradient(135deg, #0d0a1e 0%, #150e2e 50%, #0a0d24 100%);
     --theme-name:        'Midnight';
 }
@@ -217,17 +207,16 @@
 [data-theme="midnight"] .accent,
 [data-theme="midnight"] h1 em {
     color: var(--theme-accent2) !important;
+    -webkit-text-fill-color: var(--theme-accent2) !important;
 }
 
-/* Aurora borealis effect */
 [data-theme="midnight"] body::after {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     pointer-events: none;
     background:
-        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(157,78,221,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(199,125,255,0.08) 0%, transparent 50%);
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(157,78,221,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(199,125,255,0.06) 0%, transparent 50%);
     animation: auroraShift 15s ease-in-out infinite alternate;
     z-index: 0;
 }
@@ -237,19 +226,17 @@
     to   { opacity: 1;   transform: translateY(-20px) scale(1.05); }
 }
 
-/* Stars */
 [data-theme="midnight"] body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background-image:
-        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
-        radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
-        radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.5) 0%, transparent 100%),
-        radial-gradient(1px 1px at 85% 45%, rgba(255,255,255,0.3) 0%, transparent 100%),
-        radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.4) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 20% 90%, rgba(199,125,255,0.7) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 90% 10%, rgba(199,125,255,0.6) 0%, transparent 100%);
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 45%, rgba(255,255,255,0.2) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 20% 90%, rgba(199,125,255,0.5) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 90% 10%, rgba(199,125,255,0.4) 0%, transparent 100%);
     pointer-events: none;
     z-index: 0;
     animation: twinkle 4s ease-in-out infinite alternate;
@@ -262,41 +249,40 @@
 
 
 /* ═══════════════════════════════════════════════════
-   THEME: WARM GLOW (Confident / 🔥) — Default
-   Golden ambers, warm earth tones
+   THEME: WARM GLOW (Confident / 🔥) — Default (Dark Luxury)
 ═══════════════════════════════════════════════════ */
 [data-theme="warm_glow"],
 :root:not([data-theme]) {
-    --theme-bg:          #f5f0e8;
-    --theme-surface:     rgba(250, 248, 244, 0.95);
-    --theme-border:      rgba(44, 26, 14, 0.08);
-    --theme-accent:      #c4843b;
-    --theme-accent2:     #d4aa5f;
-    --theme-text:        #2c1a0e;
-    --theme-text-muted:  #8a7060;
-    --theme-glow:        0 4px 24px rgba(196, 132, 59, 0.12);
+    --theme-bg:          #0a0a0f;
+    --theme-surface:     rgba(255, 255, 255, 0.04);
+    --theme-border:      rgba(200, 160, 255, 0.08);
+    --theme-accent:      #c8a0ff;
+    --theme-accent2:     #f0c8a0;
+    --theme-text:        #e8e4f0;
+    --theme-text-muted:  #5a5470;
+    --theme-glow:        0 4px 24px rgba(200, 160, 255, 0.08);
     --theme-name:        'Warm Glow';
 }
 
 
 /* ═══════════════════════════════════════════════════
    EMOTIONAL SIGNATURE BADGE
-   Floating badge showing current mood & signature
 ═══════════════════════════════════════════════════ */
 #em-signature-badge {
     position: fixed;
     bottom: 100px;
     right: 20px;
     z-index: 9998;
-    background: var(--theme-surface, rgba(255,255,255,0.9));
-    border: 1px solid var(--theme-border, rgba(0,0,0,0.1));
+    background: rgba(10, 10, 15, 0.7);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid rgba(200, 160, 255, 0.12);
     border-radius: 16px;
     padding: 8px 14px;
     font-size: 0.7rem;
     font-family: 'Jost', 'Inter', sans-serif;
     letter-spacing: 0.05em;
-    backdrop-filter: blur(12px);
-    box-shadow: var(--theme-glow, 0 4px 16px rgba(0,0,0,0.1));
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(200, 160, 255, 0.05);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -316,13 +302,16 @@
 }
 
 #em-signature-badge .badge-text {
-    color: var(--theme-text-muted, #666);
+    color: var(--theme-text-muted, #5a5470);
 }
 
 #em-signature-badge .badge-code {
     font-family: monospace;
     font-size: 0.6rem;
-    color: var(--theme-accent, #c4843b);
+    background: linear-gradient(135deg, #c8a0ff, #f0c8a0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     letter-spacing: 0.02em;
 }
 
@@ -334,11 +323,12 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    background: var(--theme-surface, rgba(255,255,255,0.6));
-    border: 1px solid var(--theme-border, rgba(0,0,0,0.1));
+    background: rgba(10, 10, 15, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(200, 160, 255, 0.1);
     border-radius: 100px;
     padding: 4px 6px;
-    backdrop-filter: blur(8px);
     cursor: pointer;
 }
 
@@ -351,26 +341,25 @@
     text-transform: uppercase;
     border: none;
     background: transparent;
-    color: var(--theme-text-muted, #888);
+    color: var(--theme-text-muted, #5a5470);
     cursor: pointer;
     transition: all 0.25s ease;
 }
 
 .gender-btn.active {
-    background: var(--theme-accent, #c4843b);
-    color: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    background: linear-gradient(135deg, #c8a0ff 0%, #f0c8a0 100%);
+    color: #0a0a0f;
+    box-shadow: 0 2px 12px rgba(200, 160, 255, 0.2);
 }
 
 .gender-btn:hover:not(.active) {
-    background: var(--theme-surface2, rgba(0,0,0,0.05));
-    color: var(--theme-text, #333);
+    background: rgba(200, 160, 255, 0.08);
+    color: #c8a0ff;
 }
 
 
 /* ═══════════════════════════════════════════════════
    THEME TRANSITION OVERLAY
-   Smooth full-page fade when switching themes
 ═══════════════════════════════════════════════════ */
 #theme-transition-overlay {
     position: fixed;
@@ -378,12 +367,12 @@
     pointer-events: none;
     z-index: 9999;
     opacity: 0;
-    background: radial-gradient(circle at center, var(--theme-accent, #c4843b) 0%, transparent 70%);
+    background: radial-gradient(circle at center, var(--theme-accent, #c8a0ff) 0%, transparent 70%);
     transition: opacity 0.3s ease;
 }
 
 #theme-transition-overlay.flash {
-    opacity: 0.15;
+    opacity: 0.1;
 }
 
 
@@ -397,8 +386,8 @@
     font-size: 0.7rem;
     padding: 2px 8px;
     border-radius: 100px;
-    background: var(--theme-surface2, rgba(0,0,0,0.05));
-    color: var(--theme-text-muted, #888);
+    background: rgba(200, 160, 255, 0.06);
+    color: var(--theme-text-muted, #5a5470);
     margin-bottom: 6px;
 }
 
@@ -406,7 +395,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--theme-accent, #c4843b);
+    background: linear-gradient(135deg, #c8a0ff, #f0c8a0);
     animation: moodPulse 2s ease-in-out infinite;
 }
 
@@ -421,7 +410,6 @@
 
 /* Tablets and smaller screens */
 @media (max-width: 992px) {
-    /* Hero section */
     .hero {
         grid-template-columns: 1fr;
         padding: 2rem;
@@ -429,10 +417,9 @@
     }
     
     .hero-image {
-        grid-row: 1; /* Move image to top */
+        grid-row: 1;
     }
     
-    /* Wardrobe layout */
     .wardrobe-container {
         flex-direction: column;
     }
@@ -440,14 +427,13 @@
     .left-panel, .right-panel {
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid rgba(0,0,0,0.1);
+        border-bottom: 1px solid rgba(200, 160, 255, 0.08);
         height: auto;
     }
 }
 
 /* Mobile screens */
 @media (max-width: 768px) {
-    /* Navbar */
     nav {
         padding: 1rem 1.5rem !important;
         flex-wrap: wrap;
@@ -462,12 +448,10 @@
         margin-top: 1rem;
     }
 
-    /* Fonts & Typography */
     h1 {
         font-size: 2.2rem !important;
     }
     
-    /* Upload Grid */
     .wardrobe-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 1rem !important;
@@ -484,12 +468,10 @@
         font-size: 0.7rem;
     }
 
-    /* Result pages grid */
     .body-result-grid, .color-grid {
         grid-template-columns: 1fr !important;
     }
     
-    /* Auth Modal / Auth pages */
     .auth-card {
         padding: 2rem 1rem !important;
     }

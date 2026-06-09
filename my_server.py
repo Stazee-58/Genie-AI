@@ -94,7 +94,8 @@ def login():
         success, result = auth_manager.verify_user(username, password)
         if success:
             session['user_id'] = result
-            return redirect(url_for('wardrobe_page'))
+            session['username'] = username
+            return redirect(url_for('home_page'))
         else:
             return render_template('login.html', error=result)
     return render_template('login.html')
@@ -107,7 +108,8 @@ def register():
         success, result = auth_manager.register_user(username, password)
         if success:
             session['user_id'] = result
-            return redirect(url_for('wardrobe_page'))
+            session['username'] = username
+            return redirect(url_for('home_page'))
         else:
             return render_template('register.html', error=result)
     return render_template('register.html')
@@ -115,12 +117,33 @@ def register():
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
+    session.pop('username', None)
     return redirect(url_for('home_page'))
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile_page():
+    user_id = session.get('user_id')
+    if request.method == 'POST':
+        full_name = request.form.get('full_name', '')
+        dob = request.form.get('dob', '')
+        gender = request.form.get('gender', '')
+        auth_manager.update_user_profile(user_id, full_name, dob, gender)
+        return redirect(url_for('profile_page', success='1'))
+        
+    profile = auth_manager.get_user_profile(user_id) or {}
+    success = request.args.get('success') == '1'
+    return render_template('profile.html', profile=profile, success=success)
 
 # Giao diện trang chủ
 @app.route("/")
 def home_page():
     return render_template("home.html")
+
+# Giao diện trang giới thiệu
+@app.route("/about")
+def about_page():
+    return render_template("about.html")
 
 # Giao diện thông tin của face shape
 @app.route("/face_shape/<shape>", methods=['GET', 'POST'])
@@ -143,6 +166,10 @@ def face_shape_func():
             print("Save = ", path_to_save)
             image.save(path_to_save)
 
+            # Lưu vào session ngay sau khi save thành công để AI Stylist / Chatbot có thể dùng
+            session['face_image_path'] = os.path.abspath(path_to_save)
+            session['upload_ts']       = int(time.time())
+
             if not detect_face(path_to_save):
                 return render_template("face_shape.html", msg="Ảnh không hợp lệ, vui lòng dùng ảnh chụp rõ mặt")
 
@@ -152,10 +179,7 @@ def face_shape_func():
                 face_shape = DEFAULT_FACE_SHAPE
 
             label = f'Face: {face_shape}'
-            # Lưu vào session để Stylist AI dùng lại
-            session['face_image_path'] = os.path.abspath(path_to_save)
-            session['face_shape']      = face_shape.lower()
-            session['upload_ts']       = int(time.time())  # dùng để reset chat history
+            session['face_shape'] = face_shape.lower()
             return render_template("face_shape.html", label=label, msg="Tải file lên thành công")
 
         except Exception as ex:
@@ -227,6 +251,10 @@ def personal_color_func():
             print("Save = ", path_to_save)
             image.save(path_to_save)
 
+            # Lưu vào session ngay sau khi save
+            session['face_image_path'] = os.path.abspath(path_to_save)
+            session['upload_ts']       = int(time.time())
+
             if not detect_face(path_to_save):
                 return render_template("personal_color.html", msg="Ảnh không hợp lệ, vui lòng dùng ảnh chụp rõ mặt")
 
@@ -242,6 +270,7 @@ def personal_color_func():
                 label_normalized = DEFAULT_PERSONAL_COLOR
                 label = label_normalized.replace('_', ' ')
 
+            session['personal_color'] = label_normalized
             return render_template("personal_color.html", label=label, msg="Tải file lên thành công")
 
         except Exception as ex:
@@ -380,8 +409,17 @@ def chatbot_api():
             f"[Emotional Signature: {signature[:16]}...]"
         )
 
+    # Thêm thông tin cá nhân
+    user_info = []
+    face_shape = session.get('face_shape')
+    body_shape = session.get('body_shape')
+    if face_shape: user_info.append(f"Khuôn mặt của người dùng: {face_shape}")
+    if body_shape: user_info.append(f"Dáng người của người dùng: {body_shape}")
+
     parts = []
     parts.append(f"Bạn là trợ lý thời trang AI thông minh của FashionMentor.")
+    if user_info:
+        parts.append("THÔNG TIN CÁ NHÂN CỦA NGƯỜI DÙNG:\n" + "\n".join(user_info))
     if sig_context:
         parts.append(sig_context)
     if trend_context:
@@ -461,16 +499,21 @@ def stylist_generate():
     glasses_file = request.form.get('glasses_file', '').strip()
     face_upload = request.files.get('face_image')
 
-    if not face_upload:
-        return jsonify({'error': 'Thiếu ảnh khuôn mặt'}), 400
+    session_photo = session.get('face_image_path', '')
+    if not face_upload and not (session_photo and Path(session_photo).exists()):
+        return jsonify({'error': 'Thiếu ảnh khuôn mặt. Hãy tải lên ảnh mặt của bạn.'}), 400
+    
     if face_shape not in VALID_FACE_SHAPES:
         return jsonify({'error': 'face_shape không hợp lệ'}), 400
     if not hair_file and not glasses_file:
         return jsonify({'error': 'Chưa chọn mẫu tóc hoặc kính'}), 400
 
-    # Lưu ảnh upload tạm
     tmp_face = _STYLIST_OUTPUT / f'_face_{uuid.uuid4().hex}.jpg'
-    face_upload.save(str(tmp_face))
+    if face_upload:
+        face_upload.save(str(tmp_face))
+    else:
+        import shutil
+        shutil.copy(session_photo, str(tmp_face))
 
     try:
         images_root = Path(__file__).parent / 'templates' / 'images' / face_shape
@@ -781,12 +824,9 @@ def wardrobe_upload():
     # Mã hóa file hình ảnh gốc (hoặc PNG nếu đã tách)
     if clean_path.exists():
         encrypt_file(str(clean_path))
-    else:
+    if orig_path.exists():
         encrypt_file(str(orig_path))
-        
-    # Luôn xóa ảnh orig nếu đã dùng xong và clean_path có tồn tại
-    if clean_path.exists() and orig_path.exists():
-        orig_path.unlink()
+
 
     # Lưu vào DB
     item_id = add_item(
@@ -796,6 +836,7 @@ def wardrobe_upload():
         gender=gender,
         tags=info.get('tags', []),
         user_id=user_id,
+        original_filename=orig_name,
     )
 
     return jsonify({
@@ -816,11 +857,13 @@ def wardrobe_upload():
 def wardrobe_items():
     """Lấy danh sách quần áo trong tủ."""
     user_id  = session.get('user_id', 'default')
-    gender   = request.args.get('gender', session.get('gender', 'female'))
     category = request.args.get('category', None)
-    items    = get_items(user_id=user_id, gender=gender, category=category)
+    # Ignore global gender, load all user's items
+    items    = get_items(user_id=user_id, gender=None, category=category)
     for item in items:
         item['image_url'] = f'/wardrobe/image/{item["filename"]}'
+        if item.get('original_filename'):
+            item['original_image_url'] = f'/wardrobe/image/{item["original_filename"]}'
     return jsonify({'items': items, 'count': len(items)})
 
 
@@ -836,7 +879,6 @@ def wardrobe_delete(item_id):
 def daily_outfit():
     """Gợi ý outfit hôm nay dựa trên thời tiết và sở thích."""
     user_id = session.get('user_id', 'default')
-    gender  = request.args.get('gender', session.get('gender', 'female'))
     
     lat = request.args.get('lat')
     lon = request.args.get('lon')
@@ -846,7 +888,7 @@ def daily_outfit():
     except ValueError:
         lat = lon = None
         
-    result  = recommend_daily_outfit(user_id=user_id, gender=gender, lat=lat, lon=lon)
+    result  = recommend_daily_outfit(user_id=user_id, gender='unisex', lat=lat, lon=lon)
     # Thêm image_url
     for item in result.get('outfit', []):
         item['image_url'] = f'/wardrobe/image/{item.get("filename", "")}'
@@ -887,13 +929,25 @@ def wardrobe_image(filename):
     decrypted_bytes = decrypt_file_to_bytes(file_path)
     if decrypted_bytes is None:
         return "Image not found", 404
+
+    # ETag for conditional requests (304 Not Modified)
+    import hashlib
+    etag = hashlib.md5(decrypted_bytes[:1024]).hexdigest()
+    if request.if_none_match and etag in request.if_none_match:
+        return '', 304
         
-    return send_file(
+    response = send_file(
         io.BytesIO(decrypted_bytes),
-        mimetype='image/png', # Hầu hết sau khi xoá nền là PNG
+        mimetype='image/png',
         as_attachment=False,
         download_name=filename
     )
+    response.content_length = len(decrypted_bytes)
+    response.headers['ETag'] = etag
+    # Cache image for 30 days to heavily speed up load times (especially on mobile)
+    response.cache_control.max_age = 2592000
+    response.cache_control.public = True
+    return response
 
 
 @app.route('/api/weather', methods=['GET'])
@@ -953,10 +1007,14 @@ if __name__ == '__main__':
         ngrok.set_auth_token(NGROK_AUTH_TOKEN)
         import logging
         logging.getLogger("pyngrok").setLevel(logging.ERROR)
-        public_url = ngrok.connect(port, bind_tls=True).public_url
-        print("*" * 50)
-        print(f" NGROK TUNNEL ĐÃ MỞ TẠI: {public_url} ")
-        print("*" * 50)
+        try:
+            public_url = ngrok.connect(port, bind_tls=True).public_url
+            print("*" * 50)
+            print(f" NGROK TUNNEL ĐÃ MỞ TẠI: {public_url} ")
+            print("*" * 50)
+        except Exception as e:
+            print("⚠️ Ngrok lỗi (có thể do quá giới hạn session). Server vẫn chạy ở localhost!")
+            print(f"Chi tiết lỗi: {e}")
     else:
         print("⚠️ Chưa tìm thấy NGROK_AUTH_TOKEN trong file .env")
 

@@ -10,63 +10,133 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --cream: #f5f0e8;
-            --warm-white: #faf8f4;
-            --espresso: #2c1a0e;
-            --caramel: #c4843b;
-            --dust: #b8a99a;
+            --bg-primary:    #0a0a0f;
+            --bg-secondary:  #111118;
+            --glass:         rgba(255, 255, 255, 0.04);
+            --glass-border:  rgba(255, 255, 255, 0.08);
+            --accent-1:      #c8a0ff;
+            --accent-2:      #f0c8a0;
+            --gradient-1:    linear-gradient(135deg, #c8a0ff 0%, #f0c8a0 50%, #a0d4ff 100%);
+            --gradient-2:    linear-gradient(135deg, #c8a0ff 0%, #e8b4f0 100%);
+            --text-primary:  #e8e4f0;
+            --text-secondary:#a098b0;
+            --text-muted:    #5a5470;
+            /* Legacy */
+            --cream: #0a0a0f;
+            --warm-white: #111118;
+            --espresso: #e8e4f0;
+            --caramel: #c8a0ff;
+            --dust: #a098b0;
         }
         html, body {
             height: 100%;
-            background: var(--cream);
-            color: var(--espresso);
+            background: var(--bg-primary);
+            color: var(--text-primary);
             font-family: 'Jost', sans-serif;
             font-weight: 300;
+            overflow: hidden;
         }
+
+        /* ─── Animated BG ─── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 30% 30%, rgba(200,160,255,0.1) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 60% at 70% 70%, rgba(240,200,160,0.07) 0%, transparent 50%);
+            animation: authMesh 15s ease-in-out infinite alternate;
+            pointer-events: none; z-index: 0;
+        }
+        @keyframes authMesh {
+            0%   { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.08) rotate(1deg); }
+        }
+        body::after {
+            content: '';
+            position: fixed; inset: 0;
+            background-image:
+                radial-gradient(1.5px 1.5px at 15% 25%, rgba(200,160,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 72% 18%, rgba(160,212,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 80%, rgba(240,200,160,0.3) 0%, transparent 100%),
+                radial-gradient(2px 2px at 88% 55%, rgba(200,160,255,0.5) 0%, transparent 100%);
+            pointer-events: none; z-index: 0;
+            animation: twinkle 5s ease-in-out infinite alternate;
+        }
+        @keyframes twinkle { from { opacity: 0.4; } to { opacity: 1; } }
+
         .wrapper {
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
             min-height: 100vh;
+            position: relative; z-index: 1;
         }
         nav {
             padding: 2rem 4rem;
-            display: flex;
-            justify-content: space-between;
+            display: flex; justify-content: space-between;
         }
         .nav-logo {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: var(--espresso);
-            text-decoration: none;
+            font-size: 1.1rem; font-weight: 600;
+            letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--text-primary); text-decoration: none;
+        }
+        .nav-logo span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .auth-container {
             flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             padding: 2rem;
         }
+
+        /* ─── Glass Auth Card ─── */
         .auth-card {
-            background: var(--warm-white);
+            background: var(--glass);
+            backdrop-filter: blur(24px) saturate(1.5);
+            -webkit-backdrop-filter: blur(24px) saturate(1.5);
             padding: 3rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(44,26,14,0.05);
-            width: 100%;
-            max-width: 400px;
+            border-radius: 24px;
+            width: 100%; max-width: 420px;
             text-align: center;
-            border: 1px solid rgba(44,26,14,0.06);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+            animation: cardFloat 0.8s ease-out both;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(200, 160, 255, 0.05);
         }
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: var(--gradient-1);
+            opacity: 0.6;
+        }
+        /* Decorative glow orbs */
+        .auth-card::after {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 160px; height: 160px;
+            background: radial-gradient(circle, rgba(200,160,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        @keyframes cardFloat {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
         h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem;
-            font-weight: 300;
+            font-size: 2.4rem; font-weight: 300;
             margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
         p.subtitle {
-            color: var(--dust);
+            color: var(--text-secondary);
             font-size: 0.85rem;
             margin-bottom: 2rem;
             letter-spacing: 0.05em;
@@ -80,62 +150,89 @@
             font-size: 0.75rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--espresso);
+            color: var(--text-secondary);
             margin-bottom: 0.5rem;
         }
         input {
             width: 100%;
             padding: 0.8rem 1rem;
-            border: 1px solid rgba(44,26,14,0.15);
-            border-radius: 8px;
-            background: transparent;
+            border: 1px solid rgba(200, 160, 255, 0.12);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
             font-family: 'Jost', sans-serif;
             font-size: 0.9rem;
-            color: var(--espresso);
-            transition: border-color 0.2s;
+            color: var(--text-primary);
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
         input:focus {
             outline: none;
-            border-color: var(--caramel);
+            border-color: var(--accent-1);
+            box-shadow: 0 0 16px rgba(200, 160, 255, 0.1);
         }
+        input::placeholder { color: var(--text-muted); }
+
         button {
             width: 100%;
             padding: 0.9rem;
-            background: var(--espresso);
-            color: var(--cream);
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            color: var(--bg-primary);
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-family: 'Jost', sans-serif;
             font-size: 0.85rem;
+            font-weight: 500;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
             margin-top: 1rem;
+            box-shadow: 0 4px 20px rgba(200, 160, 255, 0.2);
+            position: relative;
+            overflow: hidden;
         }
-        button:hover { background: var(--caramel); }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0%   { left: -100%; }
+            100% { left: 200%; }
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(200, 160, 255, 0.3);
+        }
         .auth-links {
             margin-top: 1.5rem;
             font-size: 0.8rem;
-            color: var(--dust);
+            color: var(--text-secondary);
         }
         .auth-links a {
-            color: var(--caramel);
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-decoration: none;
+            font-weight: 400;
         }
+        .auth-links a:hover { text-decoration: underline; }
         .error-msg {
-            color: #d32f2f;
+            color: #ff6b8a;
             font-size: 0.8rem;
             margin-bottom: 1rem;
-            background: rgba(211,47,47,0.05);
-            padding: 0.5rem;
-            border-radius: 4px;
+            background: rgba(255, 107, 138, 0.08);
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 107, 138, 0.15);
         }
         
-        /* Mobile Responsive */
         @media (max-width: 768px) {
             nav { padding: 1.5rem; }
-            .auth-card { padding: 2rem 1.5rem; border-radius: 0; border: none; box-shadow: none; background: transparent; }
+            .auth-card { padding: 2rem 1.5rem; margin: 0 1rem; }
         }
     </style>
 </head>
@@ -156,11 +253,11 @@
                 <form action="/login" method="POST">
                     <div class="form-group">
                         <label for="username">Tên đăng nhập</label>
-                        <input type="text" id="username" name="username" required>
+                        <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Mật khẩu</label>
-                        <input type="password" id="password" name="password" required>
+                        <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
                     </div>
                     <button type="submit">Đăng Nhập</button>
                 </form>

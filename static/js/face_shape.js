@@ -52,7 +52,10 @@ $(document).ready(function () {
         const canvas = document.getElementById("canvas-snap");
         canvas.width  = video.videoWidth  || 480;
         canvas.height = video.videoHeight || 360;
-        canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+        const ctx = canvas.getContext("2d");
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         $("#cam-hint").text("Đang phân tích khuôn mặt...");
         $("#snap_button").prop("disabled", true);

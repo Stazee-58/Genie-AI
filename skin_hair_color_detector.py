@@ -103,10 +103,12 @@ def get_hair_color(image_path):
     bool_mask = mask.astype(bool)
     region = image[bool_mask]
 
-    hair_color = []
-    for c in range(3):
-        unique, counts = np.unique(region[:,c], return_counts=True)
-        hair_color.append(unique[counts.argmax()])
-
-    hair_color_rgb = hair_color[::-1]
-    return tuple(hair_color_rgb)
+    if region.shape[0] == 0:
+        return (0, 0, 0)
+        
+    # Calculate median color instead of independent channel modes
+    median_color = np.median(region, axis=0)
+    
+    # region is BGR, so we extract and convert to int
+    b, g, r = median_color
+    return (int(r), int(g), int(b))

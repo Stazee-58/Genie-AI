@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới thiệu — StyleGenie AI</title>
+    <link rel="stylesheet" href="/static/css/shared.css">
+    <link rel="stylesheet" href="/static/css/themes.css">
+    <style>
+        .about-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-block {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .section-block:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(200, 160, 255, 0.12);
+            border-color: rgba(200, 160, 255, 0.2);
+        }
+        
+        .section-block::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-1);
+            opacity: 0.3;
+            transition: opacity 0.4s ease;
+        }
+        
+        .section-block:hover::before {
+            opacity: 0.8;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background: var(--gradient-1);
+        }
+
+        .section-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .section-content p {
+            margin-bottom: 1rem;
+        }
+        
+        .section-content ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-content strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .grid-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card {
+            background: rgba(20, 16, 40, 0.4);
+            border: 1px solid rgba(200, 160, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            background: rgba(200, 160, 255, 0.1);
+            border-color: rgba(200, 160, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .feature-card h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--accent-1);
+            margin-bottom: 0.8rem;
+            font-weight: 400;
+        }
+        
+        .highlight-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <nav class="page-nav">
+        <a href="/" class="nav-back">Home</a>
+        <div class="nav-logo">StyleGenie <span>AI</span></div>
+        <div style="width: 60px;"></div>
+    </nav>
+
+    <header class="page-hero" style="text-align: center;">
+        <div class="page-eyebrow" style="justify-content: center; margin-bottom: 1.5rem;">VỀ CHÚNG TÔI</div>
+        <h1 class="page-title"><em>StyleGenie</em> AI</h1>
+        <p class="page-subtitle" style="font-size: 1.1rem; max-width: 600px; margin: 1rem auto 0; line-height: 1.8;">
+            Hệ thống AI Fashion Agent cá nhân hóa, hoạt động trên nền tảng web, mang đến cho bạn trải nghiệm thời trang đột phá.
+        </p>
+    </header>
+
+    <main class="about-wrapper">
+        <div class="section-block" style="animation: fadeUp 0.8s ease-out 0.2s both;">
+            <h2 class="section-title">I. Mở đầu & Lý do chọn đề tài</h2>
+            <div class="section-content">
+                <p>Trong bối cảnh chuyển đổi số đang diễn ra mạnh mẽ, nhu cầu ứng dụng trí tuệ nhân tạo để phục vụ trực tiếp cho con người ngày càng trở nên cấp thiết. Trong lĩnh vực thời trang và làm đẹp, phần lớn người dùng hiện nay vẫn gặp khó khăn trong việc lựa chọn màu sắc phù hợp với sắc tố da, kiểu tóc phù hợp với hình dáng khuôn mặt, cũng như cách phối trang phục tương thích với tỉ lệ cơ thể.</p>
+                <p>Những quyết định này thường dựa trên cảm tính hoặc xu hướng nhất thời, dẫn đến hiệu quả không cao. Các giải pháp hiện có trên thị trường thường phân mảnh và chỉ giải quyết từng phần nhỏ (thử màu tóc, tư vấn kiểu tóc, hỗ trợ mua sắm).</p>
+                <p>Nhóm tác giả đề xuất và phát triển <strong>StyleGenie AI</strong> – một hệ thống tích hợp toàn diện. Đề tài mang tính thực tiễn cao, liên ngành rõ nét (CNTT, AI, Khoa học dữ liệu, Thời trang), phù hợp xu thế cá nhân hóa và tương tác thời gian thực.</p>
+            </div>
+        </div>
+
+        <div class="section-block" style="animation: fadeUp 0.8s ease-out 0.3s both;">
+            <h2 class="section-title">II. Mục tiêu & Cơ sở khoa học</h2>
+            <div class="section-content">
+                <p><strong>Mục tiêu tổng quát:</strong> Xây dựng một hệ thống AI Fashion Agent có khả năng phân tích ngoại hình, đưa ra tư vấn cá nhân hóa và tương tác thông minh thông qua chatbot.</p>
+                <p><strong>Cơ sở khoa học:</strong></p>
+                <ul>
+                    <li><span class="highlight-text">Computer Vision:</span> Phát hiện khuôn mặt, trích xuất đặc trưng màu sắc, phân tích hình thể.</li>
+                    <li><span class="highlight-text">Deep Learning:</span> Phân loại hình dáng khuôn mặt, phân đoạn vùng tóc.</li>
+                    <li><span class="highlight-text">Large Language Model (LLM):</span> Chatbot hiểu ngôn ngữ tự nhiên và phản hồi thông minh.</li>
+                    <li><span class="highlight-text">Generative AI:</span> Hỗ trợ thay đổi kiểu tóc, phụ kiện trực quan trên ảnh.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-block" style="animation: fadeUp 0.8s ease-out 0.4s both;">
+            <h2 class="section-title">III. Bốn chức năng cốt lõi</h2>
+            <div class="grid-features">
+                <div class="feature-card">
+                    <h4>1. Nhận diện màu tóc & da</h4>
+                    <p class="section-content" style="font-size: 0.95rem;">Xác định nhóm sắc độ màu cá nhân, từ đó gợi ý màu tóc làm sáng da, bảng màu quần áo ưu tiên và phụ kiện phù hợp, giúp bạn hiểu rõ nhóm màu cá nhân của mình.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>2. Nhận diện dáng khuôn mặt</h4>
+                    <p class="section-content" style="font-size: 0.95rem;">Phân tích các dáng mặt phổ biến (tròn, vuông, trái xoan, trái tim, v.v.) để đề xuất kiểu tóc giúp cân đối đường nét, hạn chế nhược điểm và định hướng phong cách nhất quán.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>3. Phân tích tỉ lệ cơ thể</h4>
+                    <p class="section-content" style="font-size: 0.95rem;">Hỗ trợ phân tích vóc dáng để gợi ý dáng trang phục ưu tiên, cách phối đồ giúp cơ thể cân đối hơn theo từng hoàn cảnh (đi học, đi làm, dự tiệc).</p>
+                </div>
+                <div class="feature-card">
+                    <h4>4. Agent Chat thông minh</h4>
+                    <p class="section-content" style="font-size: 0.95rem;">Trung tâm điều phối dữ liệu, tổng hợp thông tin để đưa ra lời khuyên toàn diện. Có khả năng thay đổi ngoại hình ảo trực tiếp trên ảnh và cập nhật xu hướng thời gian thực.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-block" style="animation: fadeUp 0.8s ease-out 0.5s both;">
+            <h2 class="section-title">IV. Cơ chế gợi ý cá nhân hóa</h2>
+            <div class="section-content">
+                <p>Khác với các hệ thống chỉ trả về danh sách cứng nhắc, StyleGenie AI xây dựng <strong>hồ sơ đặc trưng cá nhân</strong>, từ đó tạo ra các gợi ý mềm dẻo, có giải thích rõ ràng:</p>
+                <ul>
+                    <li>Gợi ý màu sắc (quần áo, phụ kiện, nhóm màu cần tránh).</li>
+                    <li>Gợi ý kiểu tóc theo mặt và phong cách (thanh lịch, năng động, tối giản).</li>
+                    <li>Gợi ý phụ kiện phối hợp không gây rối tổng thể.</li>
+                    <li>Gợi ý trang phục và cách phối đồ theo hoàn cảnh.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-block" style="animation: fadeUp 0.8s ease-out 0.6s both;">
+            <h2 class="section-title">V. Kiến trúc Công nghệ & Điểm mới</h2>
+            <div class="section-content">
+                <p>Ứng dụng web hoạt động đa nền tảng với backend <strong>Python (Flask)</strong>, tích hợp sâu các tầng xử lý ảnh và AI hội thoại. Hệ thống thiết kế UI hiện đại theo phong cách <em>Glassmorphism/Liquid Glass</em>.</p>
+                <p><strong>Điểm sáng tạo nổi bật:</strong></p>
+                <ul>
+                    <li>Tích hợp đa mô-đun (Phân tích – Tư vấn – Minh họa – Tương tác).</li>
+                    <li>Lấy người dùng làm trung tâm (Xu hướng chỉ là dữ liệu tham khảo, độ phù hợp cá nhân là cốt lõi).</li>
+                    <li>Tương tác tự nhiên như một trợ lý thời trang đời thực.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-block" style="animation: fadeUp 0.8s ease-out 0.7s both;">
+            <h2 class="section-title">VI. Định hướng Tương lai</h2>
+            <div class="section-content">
+                <p>Trong tương lai, StyleGenie AI sẽ vượt ra khỏi gợi ý tĩnh và chuyển mình thành <strong>hệ thống thích nghi động</strong> thông qua <strong>Reinforcement Learning</strong>.</p>
+                <p>Hệ thống sẽ học từ lịch sử sở thích của bạn (bạn thích gì, từ chối gì, lưu lại gì) để tối ưu chiến lược gợi ý. Bên cạnh đó là tiềm năng mở rộng sang AR (thử đồ thời gian thực) và kết nối với hệ sinh thái thời trang (salon, local brand, sàn TMĐT).</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer">
+        <a href="/" class="back_home_button">Quay lại trang chủ</a>
+    </footer>
+</body>
+</html>

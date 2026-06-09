@@ -24,6 +24,7 @@ from io import BytesIO
 
 from PIL import Image
 from dotenv import load_dotenv
+from trend_scraper import build_trend_context
 
 load_dotenv()
 
@@ -138,6 +139,7 @@ def init_db():
         ('name',        'TEXT DEFAULT ""'),
         ('note',        'TEXT DEFAULT ""'),
         ('layer_order', 'INTEGER DEFAULT 0'),
+        ('original_filename', 'TEXT DEFAULT ""'),
     ]:
         try:
             c.execute(f'ALTER TABLE wardrobe_items ADD COLUMN {col} {definition}')
@@ -156,23 +158,46 @@ def get_db():
 
 # ─── BACKGROUND REMOVAL ──────────────────────────────────────────────────────
 
+def _compress_png(path: str, max_size: int = 512):
+    """Re-save PNG with PIL optimize to drastically shrink file size.
+    rembg outputs raw uncompressed PNG (~16MB). This brings it down to ~100-300KB.
+    """
+    try:
+        img = Image.open(path)
+        img.thumbnail((max_size, max_size), Image.LANCZOS)
+        img.save(path, format='PNG', optimize=True)
+    except Exception as e:
+        print(f"[Wardrobe] PNG compress error: {e}")
+
+
 def remove_background(image_path: str, output_path: str) -> bool:
     try:
+        # Resize image first to speed up processing and heavily reduce final file size (fixes mobile crash)
+        img = Image.open(image_path)
+        img.thumbnail((512, 512))
+        img_bytes = BytesIO()
+        img.save(img_bytes, format='PNG')
+        input_data = img_bytes.getvalue()
+    except Exception as e:
+        print(f"[Wardrobe] Image load error: {e}")
+        return False
+
+    try:
         from rembg import remove as rembg_remove
-        with open(image_path, 'rb') as f:
-            input_data = f.read()
         output_data = rembg_remove(input_data)
         with open(output_path, 'wb') as f:
             f.write(output_data)
+        # Compress: rembg outputs raw PNG ~16MB → optimize to ~200KB
+        _compress_png(output_path, max_size=512)
         return True
     except ImportError:
-        img = Image.open(image_path).convert('RGBA')
-        img.save(output_path, 'PNG')
+        img = img.convert('RGBA')
+        img.save(output_path, 'PNG', optimize=True)
         return False
     except Exception as e:
         print(f"[Wardrobe] BG removal error: {e}")
-        img = Image.open(image_path).convert('RGBA')
-        img.save(output_path, 'PNG')
+        img = img.convert('RGBA')
+        img.save(output_path, 'PNG', optimize=True)
         return False
 
 
@@ -345,8 +370,8 @@ def _generate_outfit_tips(layers: List[Dict], weather: Dict, rules: Dict) -> str
     return ' '.join(tips)
 
 
-def recommend_daily_outfit(user_id: str = 'default', gender: str = 'unisex',
-                           lat: float = None, lon: float = None) -> Dict:
+def _rule_based_recommendation(user_id: str = 'default', gender: str = 'unisex',
+                               lat: float = None, lon: float = None) -> Dict:
     """
     Goi y outfit hom nay: GPS weather + layer-based selection.
     Layer 1 = Quan/Vay (mac trong)
@@ -365,11 +390,10 @@ def recommend_daily_outfit(user_id: str = 'default', gender: str = 'unisex',
         rows = conn.execute("""
             SELECT * FROM wardrobe_items
             WHERE user_id = ?
-              AND (gender = ? OR gender = 'unisex')
               AND skip_count <= 3
             ORDER BY weight DESC, RANDOM()
             LIMIT 50
-        """, (user_id, gender)).fetchall()
+        """, (user_id, )).fetchall()
 
         if not rows:
             return {
@@ -433,11 +457,138 @@ def recommend_daily_outfit(user_id: str = 'default', gender: str = 'unisex',
             'suggested_materials': rules['materials'],
             'avoid':               rules['avoid'],
             'ai_tips':             ai_tips,
-            'message':             f"Outfit cho {weather.get('description', '')} ({temp}\u00b0C) t\u1ea1i {city_name}",
+            'message':             f"Outfit cho {weather.get('description', '')} ({temp}°C) tại {city_name}",
         }
 
     finally:
         conn.close()
+
+
+def recommend_daily_outfit(user_id: str = 'default', gender: str = 'unisex',
+                           lat: float = None, lon: float = None) -> Dict:
+    """
+    Gợi ý outfit sử dụng LLM (Gemini) làm Fashion Stylist cá nhân.
+    Fallback sang rule-based nếu LLM lỗi.
+    """
+    if not _genai_client:
+        return _rule_based_recommendation(user_id, gender, lat, lon)
+
+    weather = get_current_weather(lat=lat, lon=lon)
+    temp    = weather.get('temp', 28)
+    city_name = weather.get('city', 'vị trí của bạn')
+
+    conn = get_db()
+    try:
+        rows = conn.execute("""
+            SELECT id, name, category, color, tags, weight
+            FROM wardrobe_items
+            WHERE user_id = ?
+              AND skip_count <= 3
+            ORDER BY weight DESC, RANDOM()
+            LIMIT 50
+        """, (user_id, )).fetchall()
+
+        if not rows:
+            return _rule_based_recommendation(user_id, gender, lat, lon)
+
+        items_for_ai = []
+        for r in rows:
+            items_for_ai.append({
+                'id': r['id'],
+                'name': r['name'] or r['category'],
+                'category': r['category'],
+                'color': r['color'],
+                'weight': r['weight']
+            })
+
+        # Xây dựng context
+        try:
+            trend_context = build_trend_context("thời trang hàng ngày", gender)
+        except Exception:
+            trend_context = ""
+
+        prompt = f"""
+Bạn là một Fashion Stylist đẳng cấp quốc tế làm việc cho tạp chí Vogue.
+Khách hàng của bạn là một người mang phong cách hiện đại.
+Thời tiết hôm nay tại {city_name}: {weather.get('description', '')}, nhiệt độ {temp}°C.
+Dưới đây là tủ đồ của khách hàng (JSON):
+{json.dumps(items_for_ai, ensure_ascii=False)}
+
+Thông tin xu hướng thời trang hiện tại (nếu có):
+{trend_context}
+
+NHIỆM VỤ NÂNG CẤP:
+1. LUẬT CƠ BẢN: Bạn BẮT BUỘC phải chọn 1 bộ trang phục có nền tảng vững chắc, tức là phải có ít nhất 1 Áo (Top) và 1 Quần/Váy (Bottom), hoặc 1 Đầm/Váy liền (One-piece). Không bao giờ chọn thiếu phần thân trên hoặc thân dưới.
+2. PHONG CÁCH & MÀU SẮC: Bạn phải phân tích kỹ màu sắc và kiểu dáng để ghép chúng thành một tổng thể mang phong cách rõ rệt (ví dụ: Hiphop, Nhẹ nhàng/Thanh lịch, Streetwear, Minimalism...).
+3. PHỤ KIỆN & ÁO KHOÁC: Nếu tủ đồ có phụ kiện, hãy thêm vào để làm bật lên phong cách đã chọn. Đối với áo khoác (layer), hãy khéo léo thêm vào để phù hợp thời tiết hoặc làm điểm nhấn phong cách kể cả trong mùa hè (ví dụ: áo sơ mi khoác ngoài, áo khoác mỏng).
+4. SỐ LƯỢNG: Tối đa 5-6 món đồ cho một outfit.
+
+Trả về KẾT QUẢ ĐẦU RA DƯỚI DẠNG JSON duy nhất với cấu trúc sau (không kèm markdown format):
+{{
+  "selected_item_ids": [id1, id2, ...],
+  "ai_tips": "Phân tích sâu sắc từ Stylist: Hãy chỉ rõ tên phong cách bạn hướng tới (Hiphop, Thanh lịch...), giải thích vì sao sự kết hợp màu sắc và chất liệu này lại hợp nhau. Nêu rõ tác dụng của phụ kiện hoặc áo khoác (nếu có). Ngôn từ bay bổng, sang trọng, đẳng cấp tạp chí thời trang. Dài khoảng 4-6 câu."
+}}
+        """
+
+        resp = _genai_client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config=genai_types.GenerateContentConfig(
+                temperature=0.7,
+                response_mime_type="application/json"
+            )
+        )
+        
+        result_json = json.loads(resp.text)
+        selected_ids = result_json.get('selected_item_ids', [])
+        ai_tips = result_json.get('ai_tips', '')
+
+        if not selected_ids:
+            return _rule_based_recommendation(user_id, gender, lat, lon)
+
+        # Map back to full rows
+        placeholders = ','.join('?' for _ in selected_ids)
+        full_rows = conn.execute(f"""
+            SELECT * FROM wardrobe_items
+            WHERE id IN ({placeholders})
+        """, selected_ids).fetchall()
+
+        if not full_rows:
+            return _rule_based_recommendation(user_id, gender, lat, lon)
+
+        selected_items = [dict(r) for r in full_rows]
+        for it in selected_items:
+            it['tags'] = json.loads(it.get('tags', '[]'))
+
+        # Build layers mock for frontend
+        outfit_layers = []
+        for i, item in enumerate(selected_items):
+            outfit_layers.append({
+                'layer': i + 1,
+                'label': item.get('category', 'Trang phục'),
+                'item': item
+            })
+
+        profile = get_weather_profile(temp)
+        
+        return {
+            'outfit':              selected_items,
+            'layers':              outfit_layers,
+            'weather':             weather,
+            'weather_profile':     profile,
+            'layers_needed':       len(selected_items),
+            'suggested_materials': [],
+            'avoid':               [],
+            'ai_tips':             "✨ [AI Stylist] " + ai_tips,
+            'message':             f"Outfit gợi ý từ AI Stylist cho {temp}°C tại {city_name}",
+        }
+
+    except Exception as e:
+        print("Stylist AI error:", e)
+        return _rule_based_recommendation(user_id, gender, lat, lon)
+    finally:
+        conn.close()
+
 
 
 # ─── PREFERENCE LEARNING ─────────────────────────────────────────────────────
@@ -532,14 +683,14 @@ def get_wardrobe_stats(user_id: str = 'default') -> Dict:
 
 def add_item(filename: str, category: str, color: str, gender: str = 'unisex',
              tags: List[str] = None, user_id: str = 'default',
-             name: str = '', note: str = '') -> int:
+             name: str = '', note: str = '', original_filename: str = '') -> int:
     """Them item vao wardrobe database."""
     conn = get_db()
     try:
         cur = conn.execute("""
-            INSERT INTO wardrobe_items (user_id, filename, name, note, category, color, gender, tags)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (user_id, filename, name, note, category, color, gender, json.dumps(tags or [])))
+            INSERT INTO wardrobe_items (user_id, filename, name, note, category, color, gender, tags, original_filename)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (user_id, filename, name, note, category, color, gender, json.dumps(tags or []), original_filename))
         conn.commit()
         return cur.lastrowid
     finally:
@@ -602,12 +753,20 @@ def delete_item(item_id: int, user_id: str = 'default') -> bool:
     conn = get_db()
     try:
         row = conn.execute(
-            "SELECT filename FROM wardrobe_items WHERE id = ? AND user_id = ?",
+            "SELECT filename, original_filename FROM wardrobe_items WHERE id = ? AND user_id = ?",
             (item_id, user_id)
         ).fetchone()
         if not row:
             return False
-        for fname in [row['filename'], row['filename'].replace('.png', '_orig.jpg')]:
+        
+        fnames = [row['filename']]
+        try:
+            if row['original_filename']:
+                fnames.append(row['original_filename'])
+        except IndexError:
+            fnames.append(row['filename'].replace('.png', '_orig.jpg'))
+            
+        for fname in fnames:
             fpath = WARDROBE_DIR / fname
             if fpath.exists():
                 fpath.unlink()

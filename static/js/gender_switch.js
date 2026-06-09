@@ -118,6 +118,49 @@
         // Tránh tạo trùng
         if (document.getElementById('gender-toggle')) return;
 
+        // Inject CSS if missing
+        if (!document.getElementById('gender-switch-styles')) {
+            const style = document.createElement('style');
+            style.id = 'gender-switch-styles';
+            style.innerHTML = `
+                #gender-toggle {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    background: rgba(10, 10, 15, 0.6);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    border: 1px solid rgba(200, 160, 255, 0.1);
+                    border-radius: 100px;
+                    padding: 4px 6px;
+                    cursor: pointer;
+                }
+                .gender-btn {
+                    padding: 5px 14px;
+                    border-radius: 100px;
+                    font-size: 0.7rem;
+                    font-weight: 500;
+                    letter-spacing: 0.1em;
+                    text-transform: uppercase;
+                    border: none;
+                    background: transparent;
+                    color: #a098b0;
+                    cursor: pointer;
+                    transition: all 0.25s ease;
+                }
+                .gender-btn.active {
+                    background: linear-gradient(135deg, #c8a0ff 0%, #f0c8a0 100%);
+                    color: #0a0a0f;
+                    box-shadow: 0 2px 12px rgba(200, 160, 255, 0.2);
+                }
+                .gender-btn:hover:not(.active) {
+                    background: rgba(200, 160, 255, 0.08);
+                    color: #c8a0ff;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
         const toggle = document.createElement('div');
         toggle.id = 'gender-toggle';
         toggle.title = 'Chọn giới tính để hiển thị ảnh phù hợp';
